@@ -840,6 +840,7 @@ kbd {
   .toolbar .hide-mobile { display: none; }
   .toolbar { flex-wrap: wrap; height: auto; padding-top: 8px; padding-bottom: 8px; gap: 8px; }
   .toolbar-spacer { flex-basis: 100%; display: block; height: 0; margin: 0; }
+  .toolbar .dropdown-wrap .dropdown { right: auto; left: 0; }
   .doc-title-input { flex: 1; min-width: 100px; max-width: none; }
   
   .workspace { flex-direction: column !important; }
