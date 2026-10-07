@@ -1147,7 +1147,7 @@ export function translateDocument(doc, lang) {
   const els = doc.querySelectorAll('[data-i18n]');
   els.forEach(el => {
     const key = el.getAttribute('data-i18n');
-    el.textContent = t(key, lang);
+    el.innerHTML = t(key, lang);
   });
   
   const placeholders = doc.querySelectorAll('[data-i18n-placeholder]');
