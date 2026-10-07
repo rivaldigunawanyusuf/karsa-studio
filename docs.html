@@ -169,9 +169,17 @@
       margin-top: 1.5rem;
     }
     @media (max-width: 900px) {
+      .navbar {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .nav-controls {
+        width: 100%;
+      }
       .example-grid { grid-template-columns: 1fr; }
-      .layout { flex-direction: column; }
-      .sidebar { width: 100%; position: static; box-sizing: border-box; }
+      .layout { flex-direction: column; padding: 1rem; }
+      .sidebar { width: 100%; position: static; box-sizing: border-box; max-height: none; }
     }
 
     .code-col {
@@ -210,7 +218,7 @@
       <div style="background: var(--accent); color: white; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold;">K</div>
       Karsa Studio
     </a>
-    <div style="display: flex; gap: 8px; align-items: center;">
+    <div class="nav-controls" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <select id="lang-select" style="background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; outline: none;">
          <option value="en">English</option>
          <option value="id">Indonesia</option>
@@ -225,7 +233,7 @@
         <button id="font-dec" style="background: transparent; color: var(--text); border: none; padding: 6px 10px; cursor: pointer; border-right: 1px solid var(--border);" title="Decrease Font Size" data-i18n-title="btn_font_dec_tip">A-</button>
         <button id="font-inc" style="background: transparent; color: var(--text); border: none; padding: 6px 10px; cursor: pointer;" title="Increase Font Size" data-i18n-title="btn_font_inc_tip">A+</button>
       </div>
-      <a href="/" class="btn" style="margin-left: 8px;"><span data-i18n="docs_back">Kembali ke Editor</span></a>
+      <a href="/" class="btn" style="margin-left: auto;"><span data-i18n="docs_back">Kembali ke Editor</span></a>
     </div>
   </nav>
 
