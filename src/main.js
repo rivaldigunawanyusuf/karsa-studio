@@ -704,9 +704,9 @@ function updateQuickInsert(type) {
   lastQiType = type;
   const snippets = SNIPPETS_BY_TYPE[type] || [];
   $('#quick-insert').innerHTML = snippets.length
-    ? `<span class="qi-label">Sisipkan</span>` + snippets.map((s, i) =>
+    ? `<span class="qi-label">Insert</span>` + snippets.map((s, i) =>
       `<button class="qi-btn" data-qi="${i}" title="${esc(s.detail)}"><span class="qi-icon">${esc(s.icon)}</span>${esc(s.label)}</button>`).join('')
-    : `<span class="qi-label">Tidak ada snippet untuk tipe diagram ini - gunakan Ctrl+Space untuk autocomplete</span>`;
+    : `<span class="qi-label">No snippets for this diagram type - use Ctrl+Space for autocomplete</span>`;
 }
 on($('#quick-insert'), 'click', (e) => {
   const btn = e.target.closest('[data-qi]');
@@ -1060,7 +1060,7 @@ document.title = `${store.active.name || 'Diagram'} - Karsa Studio`;
 
 const shared = readHash();
 if (shared) {
-  store.addDoc({ name: shared.state.name || 'Diagram dibagikan', code: shared.state.code || '' });
+  store.addDoc({ name: shared.state.name || 'Shared diagram', code: shared.state.code || '' });
   if (shared.mode === 'view') setLayout('preview');
   history.replaceState(null, '', location.pathname);
   toast(t('t_link_loaded', store.settings.language), 'success');
