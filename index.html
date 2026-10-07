@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Security: Content Security Policy to prevent XSS and unauthorized script execution -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; worker-src 'self' blob:; child-src 'self' blob:; connect-src 'self'; object-src 'none';" />
+    <!-- Security: Prevent MIME type sniffing -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
         <meta name="description" content="Free open-source diagram editor powered by Mermaid.js. Create flowcharts, sequence diagrams, ERDs, Gantt charts, mind maps, and more with live preview, custom themes, and high-res export." />
     <meta name="keywords" content="mermaidjs, diagram editor, flowchart maker, sequence diagram, ERD, architecture diagram, open source diagram tool, free diagram maker, Karsa Studio" />
     <meta name="author" content="Rivaldi Gunawan Yusuf" />
