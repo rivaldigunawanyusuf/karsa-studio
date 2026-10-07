@@ -7,7 +7,9 @@ export const LANGUAGES = {
 };
 
 export const TRANSLATIONS = {
-  en: {
+      stat_lines: 'lines',
+    stat_sel: 'selected',
+en: {
     // Tabs
     tab_docs: 'Documents',
     tab_templates: 'Templates',

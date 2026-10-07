@@ -66,8 +66,10 @@ const mermaidEditor = createMermaidEditor($('#editor-code'), {
     if (settings.autoRender) scheduleRender();
   },
   onCursor: ({ line, col, selection, lines }) => {
-    $('#status-cursor').textContent = `Ln ${line}, Col ${col}${selection ? ` (${selection} dipilih)` : ''}`;
-    $('#status-lines').textContent = `${lines} baris`;
+    const lang = store.settings.language;
+    const selText = selection ? ` (${selection} ${t('stat_sel', lang) || 'selected'})` : '';
+    $('#status-cursor').textContent = `Ln ${line}, Col ${col}${selText}`;
+    $('#status-lines').textContent = `${lines} ${t('stat_lines', lang) || 'lines'}`;
   },
   onSave: () => {
     const saved = store.snapshot('Simpan manual', { force: true });
@@ -101,8 +103,14 @@ function applyEditorSettings() {
   $('#btn-render').style.display = settings.autoRender ? 'none' : '';
 }
 
-function markDirty() { $('#status-saved').innerHTML = '<span class="dot dot-warn"></span> Menyimpan…'; }
-store.addEventListener('saved', () => { $('#status-saved').innerHTML = '<span class="dot dot-ok"></span> Tersimpan'; });
+function markDirty() { 
+  const lang = store.settings.language;
+  $('#status-saved').innerHTML = `<span class="dot dot-warn"></span> ${t('saving', lang)}`; 
+}
+store.addEventListener('saved', () => { 
+  const lang = store.settings.language;
+  $('#status-saved').innerHTML = `<span class="dot dot-ok"></span> ${t('saved', lang)}`; 
+});
 
 /* ━━━━━━━━━━━━━ Rendering ━━━━━━━━━━━━━ */
 let currentSvg = null;
@@ -190,7 +198,8 @@ async function doRender() {
       errLine.style.display = 'none';
     }
     mermaidEditor.setErrors([result.error]);
-    $('#status-render').innerHTML = '<span class="dot dot-err"></span> Error sintaks';
+    const lang = store.settings.language;
+    $('#status-render').innerHTML = `<span class="dot dot-err"></span> ${t('syntax_error', lang)}`;
   }
   document.body.classList.add('ready');
 }
