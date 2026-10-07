@@ -610,7 +610,6 @@ Freelance,Entertainment,10
       Firebase
       Node.js API
     Team
-      ::icon(fa fa-users)
       Product Manager
       Developer
       Designer
