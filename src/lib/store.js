@@ -42,7 +42,7 @@ export const DEFAULT_CONFIG_JSON = `{
 
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
 
-export function createDoc({ name = 'Diagram tanpa judul', code = DEFAULT_CODE, style, config } = {}) {
+export function createDoc({ name = 'Untitled Document', code = DEFAULT_CODE, style, config } = {}) {
   const now = Date.now();
   return {
     id: uid(),
@@ -71,7 +71,7 @@ function load() {
   } catch (e) {
     console.warn('Gagal memuat workspace', e);
   }
-  const first = createDoc({ name: 'Proses Checkout' });
+  const first = createDoc({ name: 'Checkout Process' });
   return { docs: [first], activeId: first.id, settings: { ...DEFAULT_SETTINGS } };
 }
 
