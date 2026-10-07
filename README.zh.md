@@ -2,7 +2,7 @@
 
 **Karsa Studio** 是一款功能全面、专业的 *文本到图表 (Text-to-Diagram)* 编辑器，作为**开源 (非商业)** 项目发布。该应用程序极其轻量级、速度极快，并且完全在用户的浏览器内（100% 客户端）处理所有数据。该项目的主要目标是通过简单地编写代码来帮助开发人员、系统架构师、项目经理以及任何需要快速可视化想法、架构和工作流的人，而无需手动绘图。
 
-可直接访问该应用程序：**[karsa.rivaldigunawanyusuf.com](https://karsa.rivaldigunawanyusuf.com)**
+可直接访问该应用程序：**[karsa-studio.rivaldigunawanyusuf.com](https://karsa-studio.rivaldigunawanyusuf.com)**
 
 ## 核心功能
 
@@ -88,7 +88,7 @@ Karsa 是专门作为 **静态站点应用程序 (SPA)** 设计的。您可以�
    ```
 2. 这将生成一个包含静态文件 (HTML、CSS 和压缩后的 JS) 的 `dist/` 文件夹。
 3. 您可以直接将此 `dist/` 文件夹上传到您喜欢的静态托管服务 (例如 Vercel、Netlify、GitHub Pages)。
-4. 别忘了将您的域名 (karsa.rivaldigunawanyusuf.com) 指向该托管服务。
+4. 别忘了将您的域名 (karsa-studio.rivaldigunawanyusuf.com) 指向该托管服务。
 
 当用户访问您的网站时，他们的浏览器将承担工作负载 (图表渲染)，确保您的网站在面对大规模流量激增时具有高度弹性，而不会使服务器超载！
 
@@ -123,4 +123,4 @@ Karsa Studio 是在 Mermaid.js 生态系统之上开发的图表编辑器 (前�
 
 该项目最初是为个人内部需求而创建的，旨在通过自定义的界面简化图表创建过程。
 
-目前，该项目是开源的，任何人都可以使用。您可以在 `karsa.rivaldigunawanyusuf.com` 免费访问和使用此应用程序。
+目前，该项目是开源的，任何人都可以使用。您可以在 `karsa-studio.rivaldigunawanyusuf.com` 免费访问和使用此应用程序。

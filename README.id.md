@@ -2,7 +2,7 @@
 
 **Karsa Studio** adalah aplikasi editor *Text-to-Diagram* profesional berfitur lengkap yang dirilis secara **Open Source (Non-Commercial)**. Aplikasi ini sangat ringan, sangat cepat, dan memproses seluruh data sepenuhnya di *browser* pengguna (100% Client-Side). Tujuan utama dibuatnya proyek ini adalah untuk membantu para pengembang, desainer arsitektur sistem, manajer proyek, dan siapa saja yang perlu memvisualisasikan ide, arsitektur, dan alur kerja secara cepat hanya dengan mengetik kode, tanpa perlu menggambar manual.
 
-Aplikasi ini dapat diakses secara langsung di: **[karsa.rivaldigunawanyusuf.com](https://karsa.rivaldigunawanyusuf.com)**
+Aplikasi ini dapat diakses secara langsung di: **[karsa-studio.rivaldigunawanyusuf.com](https://karsa-studio.rivaldigunawanyusuf.com)**
 
 ## Fitur Unggulan
 
@@ -88,7 +88,7 @@ Karsa dirancang khusus sebagai **Static Site Application (SPA)**. Anda dapat men
    ```
 2. Ini akan menghasilkan folder `dist/` yang berisi kumpulan _file_ statis (HTML, CSS, dan JS yang telah dikompresi).
 3. Anda dapat langsung mengunggah folder `dist/` ini ke layanan *hosting* statis pilihan Anda.
-4. Jangan lupa arahkan domain Anda (karsa.rivaldigunawanyusuf.com) ke layanan *hosting* tersebut.
+4. Jangan lupa arahkan domain Anda (karsa-studio.rivaldigunawanyusuf.com) ke layanan *hosting* tersebut.
 
 Ketika pengguna mengunjungi situs Anda, peramban mereka yang akan memikul beban kerja (*rendering* diagram), memastikan situs Anda sangat kuat menahan lonjakan *traffic* tinggi tanpa membuat server terbebani!
 
@@ -123,4 +123,4 @@ Karsa Studio adalah editor diagram (frontend interface) yang dikembangkan di ata
 
 Proyek ini pada awalnya dibuat untuk kebutuhan internal pribadi guna mempermudah pembuatan diagram dengan antarmuka yang dikustomisasi.
 
-Saat ini, proyek bersifat Open Source dan terbuka untuk digunakan oleh siapa saja. Anda dapat mengakses dan menggunakan aplikasi ini secara gratis di `karsa.rivaldigunawanyusuf.com`.
+Saat ini, proyek bersifat Open Source dan terbuka untuk digunakan oleh siapa saja. Anda dapat mengakses dan menggunakan aplikasi ini secara gratis di `karsa-studio.rivaldigunawanyusuf.com`.

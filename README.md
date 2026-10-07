@@ -2,7 +2,7 @@
 
 **Karsa Studio** is a full-featured, professional *Text-to-Diagram* editor released as **Open Source (Non-Commercial)**. This application is incredibly lightweight, blazingly fast, and processes all data entirely within the user's browser (100% Client-Side). The primary goal of this project is to assist developers, system architects, project managers, and anyone who needs to rapidly visualize ideas, architectures, and workflows by simply typing code, eliminating the need for manual drawing.
 
-This application can be accessed directly at: **[karsa.rivaldigunawanyusuf.com](https://karsa.rivaldigunawanyusuf.com)**
+This application can be accessed directly at: **[karsa-studio.rivaldigunawanyusuf.com](https://karsa-studio.rivaldigunawanyusuf.com)**
 
 ## Key Features
 
@@ -88,7 +88,7 @@ Karsa is specifically designed as a **Static Site Application (SPA)**. You can h
    ```
 2. This will generate a `dist/` folder containing the static files (HTML, CSS, and compressed JS).
 3. You can directly upload this `dist/` folder to your preferred static hosting service (e.g., Vercel, Netlify, GitHub Pages).
-4. Don't forget to point your domain (karsa.rivaldigunawanyusuf.com) to the hosting service.
+4. Don't forget to point your domain (karsa-studio.rivaldigunawanyusuf.com) to the hosting service.
 
 When users visit your site, their browser will shoulder the workload (diagram rendering), ensuring your site is highly resilient against massive traffic spikes without overloading the server!
 
@@ -123,4 +123,4 @@ Karsa Studio is a diagram editor (frontend interface) developed on top of the Me
 
 This project was initially created for personal internal needs to simplify diagram creation with a customized interface.
 
-Currently, the project is Open Source and open for anyone to use. You can access and use this application for free at `karsa.rivaldigunawanyusuf.com`.
+Currently, the project is Open Source and open for anyone to use. You can access and use this application for free at `karsa-studio.rivaldigunawanyusuf.com`.
