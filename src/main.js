@@ -67,9 +67,9 @@ const mermaidEditor = createMermaidEditor($('#editor-code'), {
   },
   onCursor: ({ line, col, selection, lines }) => {
     const lang = store.settings.language;
-    const selText = selection ? ` (${selection} ${t('stat_sel', lang) || 'selected'})` : '';
-    $('#status-cursor').textContent = `Ln ${line}, Col ${col}${selText}`;
-    $('#status-lines').textContent = `${lines} ${t('stat_lines', lang) || 'lines'}`;
+    const selText = selection ? ` (${selection} <span data-i18n="stat_sel">${t('stat_sel', lang) || 'selected'}</span>)` : '';
+    $('#status-cursor').innerHTML = `Ln ${line}, Col ${col}${selText}`;
+    $('#status-lines').innerHTML = `${lines} <span data-i18n="stat_lines">${t('stat_lines', lang) || 'lines'}</span>`;
   },
   onSave: () => {
     const saved = store.snapshot('Simpan manual', { force: true });
@@ -105,11 +105,11 @@ function applyEditorSettings() {
 
 function markDirty() { 
   const lang = store.settings.language;
-  $('#status-saved').innerHTML = `<span class="dot dot-warn"></span> ${t('saving', lang)}`; 
+  $('#status-saved').innerHTML = `<span class="dot dot-warn"></span> <span data-i18n="saving">${t('saving', lang)}</span>`; 
 }
 store.addEventListener('saved', () => { 
   const lang = store.settings.language;
-  $('#status-saved').innerHTML = `<span class="dot dot-ok"></span> ${t('saved', lang)}`; 
+  $('#status-saved').innerHTML = `<span class="dot dot-ok"></span> <span data-i18n="saved">${t('saved', lang)}</span>`; 
 });
 
 /* ━━━━━━━━━━━━━ Rendering ━━━━━━━━━━━━━ */
@@ -199,7 +199,7 @@ async function doRender() {
     }
     mermaidEditor.setErrors([result.error]);
     const lang = store.settings.language;
-    $('#status-render').innerHTML = `<span class="dot dot-err"></span> ${t('syntax_error', lang)}`;
+    $('#status-render').innerHTML = `<span class="dot dot-err"></span> <span data-i18n="syntax_error">${t('syntax_error', lang)}</span>`;
   }
   document.body.classList.add('ready');
 }
