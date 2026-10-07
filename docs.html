@@ -262,6 +262,7 @@
     <aside class="sidebar">
       <h3><span data-i18n="docs_toc">Table of Contents</span></h3>
       <ul>
+        <li><a href="#file-formats"><span data-i18n="docs_formats_title">About .krs & .karsa File Formats</span></a></li>
         <li><a href="#flowchart"><span data-i18n="d_flowchart">Flowchart</span></a></li>
         <li><a href="#architecture"><span data-i18n="d_arch">Architecture Flowchart</span></a></li>
         <li><a href="#sequence"><span data-i18n="d_seq">Sequence Diagram</span></a></li>
@@ -291,6 +292,15 @@
       <p style="color: var(--text-soft); font-size: 1.1rem; margin-bottom: 2rem;">
         <span data-i18n="docs_intro">Learn how to create various diagrams using text-based script languages. Each example below is taken directly from our standard templates, complete with visual previews.</span>
       </p>
+
+      <div class="section" id="file-formats" style="border: 2px dashed var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); padding: 1.5rem; border-radius: 8px; margin-bottom: 3rem;">
+        <h2 style="margin-top: 0; color: var(--accent); border-bottom: none;"><span data-i18n="docs_formats_title">About .krs & .karsa File Formats</span></h2>
+        <p><span data-i18n="docs_formats_desc">Karsa Studio introduces custom file formats to save and load your workspace state completely.</span></p>
+        <ul style="margin-bottom: 0;">
+          <li style="margin-bottom: 12px;"><strong><code>.krs</code> (Karsa Studio Project):</strong> <span data-i18n="docs_formats_krs">This format saves both your diagram code and the editor settings (such as layout state, preview zoom/pan). Ideal for continuing your session later.</span></li>
+          <li><strong><code>.karsa</code> (Karsa Diagram Code):</strong> <span data-i18n="docs_formats_karsa">This is a lightweight format that only saves the diagram syntax without UI state. It is functionally identical to a plain text file, designed for clean diagram sharing.</span></li>
+        </ul>
+      </div>
 
       <div class="section" id="flowchart">
         <h2><span data-i18n="d_flowchart">Flowchart</span></h2>
