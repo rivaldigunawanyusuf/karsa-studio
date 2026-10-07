@@ -110,7 +110,7 @@ class Store extends EventTarget {
         try {
           localStorage.setItem(KEY, JSON.stringify(this.state));
         } catch (err) {
-          this.emit('error', { message: 'Penyimpanan lokal penuh. Ekspor backup lalu hapus beberapa dokumen.' });
+          this.emit('error', { message: 'Local storage full. Export backup then delete some documents.' });
         }
       }
     };

@@ -33,16 +33,16 @@ const ICONS = {
 applyUiTheme(settings.uiTheme);
 on($('#btn-theme-toggle'), 'click', () => {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  
+
   // Show loading overlay
   $('#theme-overlay').classList.add('active');
-  
+
   // Wait a frame to ensure overlay is visible before freezing the main thread
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       store.setSetting('uiTheme', next);
       applyUiTheme(next);
-      
+
       const currentDiagramTheme = store.active?.style?.theme || 'auto';
       if (currentDiagramTheme === 'auto') {
         // Bypass the 350ms debounce for immediate re-render
@@ -260,7 +260,7 @@ on(canvas, 'pointerdown', (e) => {
   if (e.button !== 0 && e.button !== 1) return;
   if (e.target.closest('a')) return;
   pan = { x: e.clientX - panX, y: e.clientY - panY, id: e.pointerId };
-  try { canvas.setPointerCapture(e.pointerId); } catch(err) {}
+  try { canvas.setPointerCapture(e.pointerId); } catch (err) { }
   canvas.classList.add('panning');
 });
 on(canvas, 'pointermove', (e) => {
@@ -272,10 +272,10 @@ on(canvas, 'pointermove', (e) => {
 const endPan = (e) => {
   if (!pan) return;
   if (e && e.pointerId) {
-    try { canvas.releasePointerCapture(e.pointerId); } catch(err) {}
+    try { canvas.releasePointerCapture(e.pointerId); } catch (err) { }
   }
-  pan = null; 
-  canvas.classList.remove('panning'); 
+  pan = null;
+  canvas.classList.remove('panning');
 };
 on(canvas, 'pointerup', endPan);
 on(canvas, 'pointercancel', endPan);
@@ -378,9 +378,9 @@ $$('.sidebar-tab').forEach((tab) => on(tab, 'click', () => {
 /* ── Documents ── */
 function timeAgo(ts) {
   const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return 'baru saja';
-  if (s < 3600) return `${Math.floor(s / 60)} mnt lalu`;
-  if (s < 86400) return `${Math.floor(s / 3600)} jam lalu`;
+  if (s < 60) return 'just now';
+  if (s < 3600) return `${Math.floor(s / 60)} mins ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)} hours ago`;
   return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 }
 
@@ -403,7 +403,7 @@ function renderDocList() {
     .filter((d) => !q || (d.name || '').toLowerCase().includes(q) || d.code.toLowerCase().includes(q))
     .sort((a, b) => (b.starred - a.starred) || (b.updatedAt - a.updatedAt));
   $('#doc-count').textContent = store.docs.length;
-  
+
   for (const id of selectedDocs) {
     if (!store.docs.find(d => d.id === id)) selectedDocs.delete(id);
   }
@@ -444,9 +444,9 @@ on($('#doc-list'), 'click', (e) => {
   const dup = e.target.closest('[data-dup]');
   if (dup) {
     const d = store.docs.find((x) => x.id === dup.dataset.dup);
-    confirmModal(t('dup_confirm', store.settings.language).replace('{name}', d.name), () => { 
-      store.duplicateDoc(d.id); 
-      toast(t('dup_success', store.settings.language)); 
+    confirmModal(t('dup_confirm', store.settings.language).replace('{name}', d.name), () => {
+      store.duplicateDoc(d.id);
+      toast(t('dup_success', store.settings.language));
     }, 'yes_duplicate', 'primary');
     return;
   }
@@ -578,7 +578,7 @@ on($('#template-container'), 'click', (e) => {
   if (!card) return;
   const templateItem = TEMPLATES.find((x) => x.id === card.dataset.tpl);
   const mode = $('#tpl-mode').value;
-  
+
   let tplName = t('tpl_name_' + templateItem.id, store.settings.language);
   if (!tplName || tplName === 'tpl_name_' + templateItem.id) tplName = templateItem.name;
   let tplCode = t('tpl_code_' + templateItem.id, store.settings.language);
@@ -640,7 +640,7 @@ function populateStylePanel() {
     </button>`).join('');
 
   const colorKeyMap = { primaryColor: 'color_primary', primaryTextColor: 'color_text', primaryBorderColor: 'color_border', lineColor: 'color_line', secondaryColor: 'color_secondary', tertiaryColor: 'color_tertiary', clusterBkg: 'color_bg_subgraph', noteBkgColor: 'color_bg_note' };
-  
+
   $('#color-vars').innerHTML = COLOR_VARS.map((v) => `
     <label class="color-var-item">
       <input type="color" data-var="${v.key}" />
@@ -946,10 +946,10 @@ async function importFiles(files) {
           if (parsed.app === 'mermaid-studio' && Array.isArray(parsed.docs)) {
             isProject = true;
           }
-        } catch (e) {}
+        } catch (e) { }
 
         if (isProject) {
-          importModal(t('import_project_msg', store.settings.language), 
+          importModal(t('import_project_msg', store.settings.language),
             () => { // Append
               const n = store.importBackup(text);
               renderDocList();
@@ -980,14 +980,14 @@ async function importFiles(files) {
           try {
             const parsed = JSON.parse(text);
             if (parsed.code) {
-               // it's a valid .krs JSON single doc
-               name = parsed.name || name;
-               code = parsed.code;
-               style = parsed.style || {};
+              // it's a valid .krs JSON single doc
+              name = parsed.name || name;
+              code = parsed.code;
+              style = parsed.style || {};
             }
-          } catch(e) {}
+          } catch (e) { }
         }
-        
+
         importModal(t('import_doc_msg', store.settings.language).replace('{name}', name),
           () => {
             // New Doc (Append equivalent)
@@ -1078,4 +1078,4 @@ if (!isMac) {
   });
 }
 
-setInterval(renderDocList, 60_000); // refresh "x mnt lalu"
+setInterval(renderDocList, 60_000); // refresh
