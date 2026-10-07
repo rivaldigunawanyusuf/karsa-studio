@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokumentasi & Panduan Sintaks - Karsa Studio</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Menggunakan font eksternal untuk docs -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --text: #0f172a;
+      --text-soft: #475569;
+      --border: #e2e8f0;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --radius: 8px;
+    }
+    [data-theme="dark"] {
+      --bg: #0b0e14;
+      --surface: #11151f;
+      --surface-2: #1e2536;
+      --text: #e2e8f0;
+      --text-soft: #94a3b8;
+      --border: #2a3441;
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-soft);
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+    }
+    .navbar a.logo {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #ffffff !important;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--accent-hover); }
+
+    .layout {
+      display: flex;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      gap: 2rem;
+      align-items: flex-start;
+    }
+    
+    .sidebar {
+      flex: 0 0 250px;
+      position: sticky;
+      top: 5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-soft);
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar li {
+      margin-bottom: 0.5rem;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      display: block;
+      padding: 0.4rem 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .sidebar a:hover {
+      background: var(--surface-2);
+      color: var(--accent);
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0; /* prevent flex overflow */
+    }
+    .main-content h1 { margin-top: 0; }
+    
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: var(--accent);
+      border-bottom: 2px solid var(--surface-2);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .example-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .example-grid { grid-template-columns: 1fr; }
+      .layout { flex-direction: column; }
+      .sidebar { width: 100%; position: static; box-sizing: border-box; }
+    }
+
+    .code-col {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .code-col pre {
+      margin: 0;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+    }
+    .visual-col {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+    
+    /* Mermaid container */
+    .visual-col .mermaid {
+      margin: 0;
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/" class="logo">
+      <div style="background: var(--accent); color: white; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold;">K</div>
+      Karsa Studio
+    </a>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <select id="lang-select" style="background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-family: inherit; font-size: 0.9rem; cursor: pointer; outline: none;">
+         <option value="en">English</option>
+         <option value="id">Indonesia</option>
+         <option value="zh">中文</option>
+         <option value="ja">日本語</option>
+         <option value="ru">Русский</option>
+      </select>
+      <button id="theme-toggle" style="background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Toggle Theme" data-i18n-title="btn_theme_tip">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <div style="display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; overflow: hidden;">
+        <button id="font-dec" style="background: transparent; color: var(--text); border: none; padding: 6px 10px; cursor: pointer; border-right: 1px solid var(--border);" title="Decrease Font Size" data-i18n-title="btn_font_dec_tip">A-</button>
+        <button id="font-inc" style="background: transparent; color: var(--text); border: none; padding: 6px 10px; cursor: pointer;" title="Increase Font Size" data-i18n-title="btn_font_inc_tip">A+</button>
+      </div>
+      <a href="/" class="btn" style="margin-left: 8px;"><span data-i18n="docs_back">Kembali ke Editor</span></a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3><span data-i18n="docs_toc">Daftar Isi</span></h3>
+      <ul>
+        <li><a href="#flowchart"><span data-i18n="d_flowchart">Flowchart (Bagan Alir)</span></a></li>
+        <li><a href="#architecture"><span data-i18n="d_arch">Architecture Flowchart</span></a></li>
+        <li><a href="#sequence"><span data-i18n="d_seq">Sequence Diagram</span></a></li>
+        <li><a href="#state"><span data-i18n="d_state">State Diagram</span></a></li>
+        <li><a href="#er"><span data-i18n="d_er">ER Diagram (Database)</span></a></li>
+        <li><a href="#class"><span data-i18n="d_class">Class Diagram (OOP)</span></a></li>
+        <li><a href="#packet"><span data-i18n="d_packet">Packet Diagram</span></a></li>
+        <li><a href="#c4"><span data-i18n="d_c4">C4 Context</span></a></li>
+        <li><a href="#block"><span data-i18n="d_block">Block Diagram</span></a></li>
+        <li><a href="#gantt"><span data-i18n="d_gantt">Gantt Chart (Jadwal)</span></a></li>
+        <li><a href="#timeline"><span data-i18n="d_timeline">Timeline</span></a></li>
+        <li><a href="#journey"><span data-i18n="d_journey">User Journey</span></a></li>
+        <li><a href="#kanban"><span data-i18n="d_kanban">Kanban Board</span></a></li>
+        <li><a href="#git"><span data-i18n="d_git">Git Graph</span></a></li>
+        <li><a href="#mindmap"><span data-i18n="d_mindmap">Mindmap</span></a></li>
+        <li><a href="#pie"><span data-i18n="d_pie">Pie Chart</span></a></li>
+        <li><a href="#xychart"><span data-i18n="d_xy">XY Chart (Bar & Line)</span></a></li>
+        <li><a href="#quadrant"><span data-i18n="d_quad">Quadrant Chart</span></a></li>
+        <li><a href="#sankey"><span data-i18n="d_sankey">Sankey</span></a></li>
+        <li><a href="#radar"><span data-i18n="d_radar">Radar Chart</span></a></li>
+        <li><a href="#treemap"><span data-i18n="d_tree">Treemap</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <h1><span data-i18n="docs_title">Dokumentasi Lengkap Karsa Studio</span></h1>
+      <p style="color: var(--text-soft); font-size: 1.1rem; margin-bottom: 2rem;">
+        <span data-i18n="docs_intro">Pelajari cara membuat berbagai macam diagram menggunakan bahasa skrip berbasis teks. Setiap contoh di bawah ini diambil langsung dari template standar kami, lengkap dengan bentuk visualnya.</span>
+      </p>
+
+      <div class="section" id="flowchart">
+        <h2><span data-i18n="d_flowchart">Flowchart (Bagan Alir)</span></h2>
+        <p><span data-i18n="docs_desc_flowchart">Alur proses dengan berbagai bentuk node (kotak, oval, silinder) dan gaya khusus.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>flowchart TD
+    A([Start]) --> B[Shopping Cart]
+    B --> C{Logged in?}
+    C -- No --> D[Login Page]
+    D --> E[(User Database)]
+    E --> C
+    C -- Yes --> F[Select Address]
+    F --> G[Select Payment]
+
+    subgraph Payment
+        direction LR
+        G --> H{Method}
+        H -->|Transfer| I[Virtual Account]
+        H -->|E-Wallet| J[QRIS]
+    end
+
+    I & J --> L{Success?}
+    L -- Yes --> M[/Send Invoice/]
+    L -- No --> G
+    M --> N([Finish])</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+flowchart TD
+    A([Start]) --> B[Shopping Cart]
+    B --> C{Logged in?}
+    C -- No --> D[Login Page]
+    D --> E[(User Database)]
+    E --> C
+    C -- Yes --> F[Select Address]
+    F --> G[Select Payment]
+
+    subgraph Payment
+        direction LR
+        G --> H{Method}
+        H -->|Transfer| I[Virtual Account]
+        H -->|E-Wallet| J[QRIS]
+    end
+
+    I & J --> L{Success?}
+    L -- Yes --> M[/Send Invoice/]
+    L -- No --> G
+    M --> N([Finish])
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="architecture">
+        <h2><span data-i18n="d_arch">Architecture Flowchart</span></h2>
+        <p><span data-i18n="docs_desc_architecture">Arsitektur layanan (Service Architecture) dengan batasan lapisan yang jelas.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>flowchart LR
+    Client((User)) --> CDN[CDN / WAF]
+    CDN --> Gateway[API Gateway]
+
+    subgraph Services [App Services]
+        Gateway --> Auth{{Auth Service}}
+        Gateway --> Order[Order Service]
+    end
+
+    subgraph Databases [Data Storage]
+        Auth --> DBAuth[(User DB)]
+        Order --> DBOrder[(Order DB)]
+    end
+
+    Order -.-> Queue>Message Queue]
+    Queue -.-> Worker[[Worker Node]]</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+flowchart LR
+    Client((User)) --> CDN[CDN / WAF]
+    CDN --> Gateway[API Gateway]
+
+    subgraph Services [App Services]
+        Gateway --> Auth{{Auth Service}}
+        Gateway --> Order[Order Service]
+    end
+
+    subgraph Databases [Data Storage]
+        Auth --> DBAuth[(User DB)]
+        Order --> DBOrder[(Order DB)]
+    end
+
+    Order -.-> Queue>Message Queue]
+    Queue -.-> Worker[[Worker Node]]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="sequence">
+        <h2><span data-i18n="d_seq">Sequence Diagram</span></h2>
+        <p><span data-i18n="docs_desc_sequence">Diagram interaksi dan urutan operasi antar sistem atau aktor.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>sequenceDiagram
+    autonumber
+    actor U as User
+    participant C as Client App
+    participant S as Server
+    participant DB as Database
+
+    U->>C: Click Login
+    activate C
+    C->>S: POST /auth/login
+    activate S
+    S->>DB: Query user by email
+    activate DB
+    DB-->>S: Return user hash
+    deactivate DB
+    
+    alt Password match
+        S-->>C: 200 OK (Token)
+        C-->>U: Show Dashboard
+    else Password mismatch
+        S-->>C: 401 Unauthorized
+        C-->>U: Show Error
+    end
+    deactivate S
+    deactivate C</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant C as Client App
+    participant S as Server
+    participant DB as Database
+
+    U->>C: Click Login
+    activate C
+    C->>S: POST /auth/login
+    activate S
+    S->>DB: Query user by email
+    activate DB
+    DB-->>S: Return user hash
+    deactivate DB
+    
+    alt Password match
+        S-->>C: 200 OK (Token)
+        C-->>U: Show Dashboard
+    else Password mismatch
+        S-->>C: 401 Unauthorized
+        C-->>U: Show Error
+    end
+    deactivate S
+    deactivate C
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="state">
+        <h2><span data-i18n="d_state">State Diagram</span></h2>
+        <p><span data-i18n="docs_desc_state">Transisi status objek dari satu kondisi ke kondisi lain (State Machine).</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>stateDiagram-v2
+    direction LR
+    [*] --> Draft
+    Draft --> Pending : submit
+    Pending --> Paid : pay
+    Pending --> Cancelled : timeout
+    Paid --> Shipped : ship
+
+    state Shipped {
+        [*] --> InTransit
+        InTransit --> Delivered
+        Delivered --> [*]
+    }
+
+    Shipped --> Completed
+    Completed --> [*]
+    Cancelled --> [*]</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+stateDiagram-v2
+    direction LR
+    [*] --> Draft
+    Draft --> Pending : submit
+    Pending --> Paid : pay
+    Pending --> Cancelled : timeout
+    Paid --> Shipped : ship
+
+    state Shipped {
+        [*] --> InTransit
+        InTransit --> Delivered
+        Delivered --> [*]
+    }
+
+    Shipped --> Completed
+    Completed --> [*]
+    Cancelled --> [*]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="er">
+        <h2><span data-i18n="d_er">ER Diagram (Database)</span></h2>
+        <p><span data-i18n="docs_desc_er">Skema relasional database lengkap dengan PK, FK, dan kardinalitas.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>erDiagram
+    USERS ||--o{ ORDERS : "places"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    PRODUCTS ||--o{ ORDER_ITEMS : "ordered in"
+
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar full_name
+    }
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        varchar status
+    }
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+    }
+    PRODUCTS {
+        bigint id PK
+        varchar name
+        decimal price
+    }</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+erDiagram
+    USERS ||--o{ ORDERS : "places"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    PRODUCTS ||--o{ ORDER_ITEMS : "ordered in"
+
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar full_name
+    }
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        varchar status
+    }
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint product_id FK
+        int quantity
+    }
+    PRODUCTS {
+        bigint id PK
+        varchar name
+        decimal price
+    }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="class">
+        <h2><span data-i18n="d_class">Class Diagram (OOP)</span></h2>
+        <p><span data-i18n="docs_desc_class">Struktur kelas, interface, abstraksi, beserta relasinya.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>classDiagram
+    direction TB
+    class Repository~T~ {
+        &lt;&lt;interface&gt;&gt;
+        +findById(id) T
+        +save(entity T) void
+    }
+    class User {
+        +String id
+        +String email
+        +login(password) bool
+    }
+    class Order {
+        +String id
+        +OrderStatus status
+    }
+    class OrderStatus {
+        &lt;&lt;enumeration&gt;&gt;
+        PENDING
+        PAID
+    }
+    class UserRepository
+    class OrderService {
+        -Repository~Order~ repo
+        +checkout(user) Order
+    }
+
+    Repository &lt;|.. UserRepository : implements
+    User "1" --&gt; "*" Order : places
+    Order --&gt; OrderStatus
+    OrderService ..&gt; Repository : uses</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+classDiagram
+    direction TB
+    class Repository~T~ {
+        &lt;&lt;interface&gt;&gt;
+        +findById(id) T
+        +save(entity T) void
+    }
+    class User {
+        +String id
+        +String email
+        +login(password) bool
+    }
+    class Order {
+        +String id
+        +OrderStatus status
+    }
+    class OrderStatus {
+        &lt;&lt;enumeration&gt;&gt;
+        PENDING
+        PAID
+    }
+    class UserRepository
+    class OrderService {
+        -Repository~Order~ repo
+        +checkout(user) Order
+    }
+
+    Repository &lt;|.. UserRepository : implements
+    User "1" --&gt; "*" Order : places
+    Order --&gt; OrderStatus
+    OrderService ..&gt; Repository : uses
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="gantt">
+        <h2><span data-i18n="d_gantt">Gantt Chart (Jadwal)</span></h2>
+        <p><span data-i18n="docs_desc_gantt">Penjadwalan proyek, dependensi tugas, dan alokasi waktu.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>gantt
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+    
+    section Planning
+    Requirements   :done, req, 2024-01-01, 7d
+    UI Design      :active, ui, after req, 5d
+    
+    section Development
+    Backend API    :crit, active, api, after req, 10d
+    Frontend Int   :front, after api, 7d
+    
+    section Testing
+    QA Testing     :test, after front, 5d
+    Deployment     :milestone, after test, 0d</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+gantt
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+    
+    section Planning
+    Requirements   :done, req, 2024-01-01, 7d
+    UI Design      :active, ui, after req, 5d
+    
+    section Development
+    Backend API    :crit, active, api, after req, 10d
+    Frontend Int   :front, after api, 7d
+    
+    section Testing
+    QA Testing     :test, after front, 5d
+    Deployment     :milestone, after test, 0d
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="mindmap">
+        <h2><span data-i18n="d_mindmap">Mindmap</span></h2>
+        <p><span data-i18n="docs_desc_mindmap">Pemetaan pemikiran hierarkis secara radial atau terpusat.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>mindmap
+  root((Company))
+    Engineering
+      Backend
+      Frontend
+      DevOps
+        CI/CD
+        Kubernetes
+    Product
+      Design
+      Research
+    Sales
+      Inbound
+      Outbound</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+mindmap
+  root((Company))
+    Engineering
+      Backend
+      Frontend
+      DevOps
+        CI/CD
+        Kubernetes
+    Product
+      Design
+      Research
+    Sales
+      Inbound
+      Outbound
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="pie">
+        <h2><span data-i18n="d_pie">Pie Chart</span></h2>
+        <p><span data-i18n="docs_desc_pie">Visualisasi metrik / pembagian proporsi data.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>pie title API Traffic Distribution
+    "Mobile App" : 45
+    "Web App" : 35
+    "Public API" : 15
+    "Internal" : 5</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+pie title API Traffic Distribution
+    "Mobile App" : 45
+    "Web App" : 35
+    "Public API" : 15
+    "Internal" : 5
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="git">
+        <h2><span data-i18n="d_git">Git Graph</span></h2>
+        <p><span data-i18n="docs_desc_git">Visualisasi percabangan (branch) dan riwayat commit pada repositori Git.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit id:"add auth"
+    commit id:"add db"
+    checkout main
+    merge develop
+    branch hotfix
+    checkout hotfix
+    commit id:"fix bug"
+    checkout main
+    merge hotfix</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    commit id:"add auth"
+    commit id:"add db"
+    checkout main
+    merge develop
+    branch hotfix
+    checkout hotfix
+    commit id:"fix bug"
+    checkout main
+    merge hotfix
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="packet">
+        <h2><span data-i18n="d_packet">Packet Diagram</span></h2>
+        <p><span data-i18n="docs_desc_packet">Struktur bit atau paket jaringan data.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>packet-beta
+title TCP Header
+0-15: "Source Port"
+16-31: "Destination Port"
+32-63: "Sequence Number"
+64-95: "Acknowledgment Number"
+96-99: "Data Offset"
+100-105: "Reserved"
+106-111: "Flags"
+112-127: "Window"
+128-143: "Checksum"
+144-159: "Urgent Pointer"</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+packet-beta
+title TCP Header
+0-15: "Source Port"
+16-31: "Destination Port"
+32-63: "Sequence Number"
+64-95: "Acknowledgment Number"
+96-99: "Data Offset"
+100-105: "Reserved"
+106-111: "Flags"
+112-127: "Window"
+128-143: "Checksum"
+144-159: "Urgent Pointer"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="c4">
+        <h2><span data-i18n="d_c4">C4 Context</span></h2>
+        <p><span data-i18n="docs_desc_c4">Diagram konteks sistem dengan metode C4 (Context, Containers, Components, Code).</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>C4Context
+    title Internet Banking System Context
+
+    Person(customer, "Customer", "Bank customer with personal accounts")
+    
+    System_Boundary(b0, "Bank System") {
+        System(banking, "Internet Banking", "Allows customers to view balances & transfer funds")
+    }
+
+    System_Ext(mail, "Email System", "Internal email system")
+    System_Ext(core, "Core Banking", "Stores account & transaction data")
+
+    Rel(customer, banking, "Uses", "HTTPS")
+    Rel(banking, mail, "Sends emails via", "SMTP")
+    Rel(banking, core, "Fetches data via", "JSON/HTTPS")
+    Rel(mail, customer, "Sends notifications to")
+    
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+C4Context
+    title Internet Banking System Context
+
+    Person(customer, "Customer", "Bank customer with personal accounts")
+    
+    System_Boundary(b0, "Bank System") {
+        System(banking, "Internet Banking", "Allows customers to view balances & transfer funds")
+    }
+
+    System_Ext(mail, "Email System", "Internal email system")
+    System_Ext(core, "Core Banking", "Stores account & transaction data")
+
+    Rel(customer, banking, "Uses", "HTTPS")
+    Rel(banking, mail, "Sends emails via", "SMTP")
+    Rel(banking, core, "Fetches data via", "JSON/HTTPS")
+    Rel(mail, customer, "Sends notifications to")
+    
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="block">
+        <h2><span data-i18n="d_block">Block Diagram</span></h2>
+        <p><span data-i18n="docs_desc_block">Layout blok (Block Diagram) dengan kolom custom (Berguna untuk arsitektur bebas).</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>block-beta
+    columns 3
+    frontend["Frontend"]:3
+    space down1&lt;[" "]&gt;(down) space
+    api["API"] auth["Auth"] queue["Queue"]
+    space down2&lt;[" "]&gt;(down) space
+    db[("Database")]:3
+
+    style frontend fill:#6366f1,color:#fff
+    style db fill:#10b981,color:#fff</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+block-beta
+    columns 3
+    frontend["Frontend"]:3
+    space down1&lt;[" "]&gt;(down) space
+    api["API"] auth["Auth"] queue["Queue"]
+    space down2&lt;[" "]&gt;(down) space
+    db[("Database")]:3
+
+    style frontend fill:#6366f1,color:#fff
+    style db fill:#10b981,color:#fff
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="timeline">
+        <h2><span data-i18n="d_timeline">Timeline</span></h2>
+        <p><span data-i18n="docs_desc_timeline">Jalur waktu suatu sejarah kejadian (Event Timeline).</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>timeline
+    title Startup Journey
+    section Early Stage
+        2023 : Idea & Validation
+             : Core team formed
+        2024 : MVP Launched
+             : First 1,000 users
+    section Growth
+        2025 : Seed funding
+             : Expansion to 5 cities
+        2026 : Series A
+             : 1 million users</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+timeline
+    title Startup Journey
+    section Early Stage
+        2023 : Idea & Validation
+             : Core team formed
+        2024 : MVP Launched
+             : First 1,000 users
+    section Growth
+        2025 : Seed funding
+             : Expansion to 5 cities
+        2026 : Series A
+             : 1 million users
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="journey">
+        <h2><span data-i18n="d_journey">User Journey</span></h2>
+        <p><span data-i18n="docs_desc_journey">Pemetaan pengalaman pengguna berdasarkan alur tahapannya.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>journey
+    title Online Shopping Experience
+    section Finding products
+        Open app: 5: Customer
+        Search product: 3: Customer
+        Read reviews: 4: Customer
+    section Checkout
+        Add to cart: 5: Customer
+        Fill address: 2: Customer
+        Pay: 3: Customer, Payment
+    section Delivery
+        Track package: 4: Customer, Courier
+        Receive item: 5: Customer</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+journey
+    title Online Shopping Experience
+    section Finding products
+        Open app: 5: Customer
+        Search product: 3: Customer
+        Read reviews: 4: Customer
+    section Checkout
+        Add to cart: 5: Customer
+        Fill address: 2: Customer
+        Pay: 3: Customer, Payment
+    section Delivery
+        Track package: 4: Customer, Courier
+        Receive item: 5: Customer
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="kanban">
+        <h2><span data-i18n="d_kanban">Kanban Board</span></h2>
+        <p><span data-i18n="docs_desc_kanban">Papan tugas manajemen ala Kanban untuk manajemen proyek.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>kanban
+    todo[Todo]
+        t1[Design login page]
+        t2[Setup CI/CD]@{ priority: 'High' }
+    progress[In Progress]
+        t3[Auth API]@{ assigned: 'Rivaldi', priority: 'Very High' }
+    review[Review]
+        t4[Order service unit tests]
+    done[Done]
+        t5[Setup repository]</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+kanban
+    todo[Todo]
+        t1[Design login page]
+        t2[Setup CI/CD]@{ priority: 'High' }
+    progress[In Progress]
+        t3[Auth API]@{ assigned: 'Rivaldi', priority: 'Very High' }
+    review[Review]
+        t4[Order service unit tests]
+    done[Done]
+        t5[Setup repository]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="xychart">
+        <h2><span data-i18n="d_xy">XY Chart (Bar & Line)</span></h2>
+        <p><span data-i18n="docs_desc_xychart">Diagram chart konvensional dengan sumbu X & Y, dengan grafik batang dan garis.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>xychart-beta
+    title "Monthly Revenue 2026 (Thousands USD)"
+    x-axis [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    y-axis "Revenue" 0 --&gt; 500
+    bar [120, 150, 180, 210, 230, 260, 300, 320, 350, 390, 420, 480]
+    line [100, 140, 170, 200, 220, 250, 280, 310, 340, 370, 410, 460]</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+xychart-beta
+    title "Monthly Revenue 2026 (Thousands USD)"
+    x-axis [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    y-axis "Revenue" 0 --> 500
+    bar [120, 150, 180, 210, 230, 260, 300, 320, 350, 390, 420, 480]
+    line [100, 140, 170, 200, 220, 250, 280, 310, 340, 370, 410, 460]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="quadrant">
+        <h2><span data-i18n="d_quad">Quadrant Chart</span></h2>
+        <p><span data-i18n="docs_desc_quadrant">Matriks kuadran 2x2 yang sangat berguna untuk prioritisasi.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>quadrantChart
+    title Feature Prioritization
+    x-axis Low Effort --&gt; High Effort
+    y-axis Low Impact --&gt; High Impact
+    quadrant-1 Plan
+    quadrant-2 Do Now
+    quadrant-3 Drop
+    quadrant-4 Delegate
+    Dark mode: [0.2, 0.55]
+    Export PDF: [0.45, 0.8]
+    SSO Login: [0.75, 0.9]
+    Animations: [0.3, 0.2]
+    Multi-language: [0.8, 0.35]</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+quadrantChart
+    title Feature Prioritization
+    x-axis Low Effort --> High Effort
+    y-axis Low Impact --> High Impact
+    quadrant-1 Plan
+    quadrant-2 Do Now
+    quadrant-3 Drop
+    quadrant-4 Delegate
+    Dark mode: [0.2, 0.55]
+    Export PDF: [0.45, 0.8]
+    SSO Login: [0.75, 0.9]
+    Animations: [0.3, 0.2]
+    Multi-language: [0.8, 0.35]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="sankey">
+        <h2><span data-i18n="d_sankey">Sankey Diagram</span></h2>
+        <p><span data-i18n="docs_desc_sankey">Visualisasi aliran bobot atau nilai (Flow rate) dari satu titik ke titik lain.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>sankey-beta
+
+Income,Salary,60
+Income,Investments,25
+Income,Freelance,15
+Salary,Needs,35
+Salary,Savings,15
+Salary,Entertainment,10
+Investments,Savings,25
+Freelance,Needs,5
+Freelance,Entertainment,10</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+sankey-beta
+
+Income,Salary,60
+Income,Investments,25
+Income,Freelance,15
+Salary,Needs,35
+Salary,Savings,15
+Salary,Entertainment,10
+Investments,Savings,25
+Freelance,Needs,5
+Freelance,Entertainment,10
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="radar">
+        <h2><span data-i18n="d_radar">Radar Chart</span></h2>
+        <p><span data-i18n="docs_desc_radar">Perbandingan berbagai atribut metrik pada objek dalam sumbu melingkar.</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>radar-beta
+    title Framework Comparison
+    axis perf["Performance"], dx["DX"], eco["Ecosystem"], learn["Learning"], ssr["SSR"]
+    curve react["React"]{80, 85, 95, 70, 85}
+    curve vue["Vue"]{85, 90, 80, 90, 80}
+    curve svelte["Svelte"]{95, 90, 60, 85, 80}
+    max 100
+    min 0</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+radar-beta
+    title Framework Comparison
+    axis perf["Performance"], dx["DX"], eco["Ecosystem"], learn["Learning"], ssr["SSR"]
+    curve react["React"]{80, 85, 95, 70, 85}
+    curve vue["Vue"]{85, 90, 80, 90, 80}
+    curve svelte["Svelte"]{95, 90, 60, 85, 80}
+    max 100
+    min 0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="treemap">
+        <h2><span data-i18n="d_tree">Treemap</span></h2>
+        <p><span data-i18n="docs_desc_treemap">Blok proporsional berhierarki untuk memvisualisasikan data bersarang (nested).</span></p>
+        <div class="example-grid">
+          <div class="code-col">
+<pre>treemap-beta
+"Budget"
+    "Engineering"
+        "Backend": 40
+        "Frontend": 30
+        "DevOps": 15
+    "Marketing"
+        "Ads": 25
+        "Content": 10
+    "Operations": 20</pre>
+          </div>
+          <div class="visual-col">
+            <div class="mermaid">
+treemap-beta
+"Budget"
+    "Engineering"
+        "Backend": 40
+        "Frontend": 30
+        "DevOps": 15
+    "Marketing"
+        "Ads": 25
+        "Content": 10
+    "Operations": 20
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-soft); font-size: 0.9rem;">
+        <h3 style="margin-top: 0; color: var(--text);"><span data-i18n="docs_disclaimer_title">Tentang Proyek Ini</span></h3>
+        <p><span data-i18n="docs_disclaimer_1">Karsa Studio adalah editor diagram (frontend interface) yang dikembangkan di atas ekosistem Mermaid.js. Aplikasi ini memanfaatkan mesin perender dan sintaks skrip dari Mermaid untuk memvisualisasikan diagram secara langsung.</span></p>
+        <p><span data-i18n="docs_disclaimer_2">Proyek ini pada awalnya dibuat untuk kebutuhan internal pribadi guna mempermudah pembuatan diagram dengan antarmuka yang dikustomisasi.</span></p>
+        <p><span data-i18n="docs_disclaimer_3">Saat ini, proyek bersifat Open Source dan terbuka untuk digunakan oleh siapa saja. Anda dapat mengakses dan menggunakan aplikasi ini secara gratis di <code>karsa.rivaldigunawanyusuf.com</code>.</span></p>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Script for Mermaid rendering & Theme adapting -->
+  <script type="module">
+    import mermaid from 'mermaid';
+    import { translateDocument } from './src/lib/i18n.js';
+    
+    // Automatically adapt to system preference if no theme is set
+    let theme = 'default';
+    let lang = 'en';
+    let fontSize = 16;
+    let state = { settings: { uiTheme: 'dark', language: 'en' } };
+
+    try {
+      const stored = localStorage.getItem('mermaid-studio:v1');
+      if (stored) {
+        state = JSON.parse(stored);
+        if (!state.settings) state.settings = {};
+        
+        if (state.settings.uiTheme) {
+          document.documentElement.setAttribute('data-theme', state.settings.uiTheme);
+          if (state.settings.uiTheme === 'dark') theme = 'dark';
+        }
+        if (state.settings.language) {
+          lang = state.settings.language;
+        }
+        if (state.settings.docsFontSize) {
+          fontSize = state.settings.docsFontSize;
+        }
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        theme = 'dark';
+        state.settings.uiTheme = 'dark';
+      }
+    } catch (e) {}
+
+    // Apply font size
+    document.documentElement.style.fontSize = fontSize + 'px';
+
+    // Translate the docs page
+    translateDocument(document, lang);
+    document.getElementById('lang-select').value = lang;
+
+    // Save settings helper
+    const saveSettings = () => {
+      localStorage.setItem('mermaid-studio:v1', JSON.stringify(state));
+    };
+
+    // UI Event Listeners
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+      lang = e.target.value;
+      state.settings.language = lang;
+      saveSettings();
+      translateDocument(document, lang);
+    });
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      state.settings.uiTheme = newTheme;
+      saveSettings();
+      
+      // Re-initialize mermaid with new theme requires page reload or re-rendering all svgs
+      // For docs, reload is easiest since we can't easily re-render all code blocks 
+      // without keeping original text.
+      window.location.reload();
+    });
+
+    document.getElementById('font-inc').addEventListener('click', () => {
+      if (fontSize < 32) fontSize += 2;
+      document.documentElement.style.fontSize = fontSize + 'px';
+      state.settings.docsFontSize = fontSize;
+      saveSettings();
+    });
+
+    document.getElementById('font-dec').addEventListener('click', () => {
+      if (fontSize > 10) fontSize -= 2;
+      document.documentElement.style.fontSize = fontSize + 'px';
+      state.settings.docsFontSize = fontSize;
+      saveSettings();
+    });
+
+    mermaid.initialize({ startOnLoad: true, theme: theme, securityLevel: 'loose' });
+  </script>
+</body>
+</html>

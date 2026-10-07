@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Karsa Studio - editor diagram Mermaid profesional untuk flowchart, ERD / arsitektur database, sequence, gantt, mindmap dan chart lainnya, dengan live preview, template, tema, riwayat versi dan export." />
+    <title>Karsa Studio</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      /* Prevent FOUC (Flash of Unstyled Content) */
+      body { margin: 0; overflow: hidden; background: #0a0a0f; }
+      [data-theme="light"] body { background: #f8f9fc; }
+      #global-loader {
+        position: fixed; inset: 0; z-index: 99999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: #0a0a0f; color: #fff; font-family: system-ui, sans-serif;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      [data-theme="light"] #global-loader { background: #f8f9fc; color: #1a1a2e; }
+      .spinner {
+        width: 36px; height: 36px; border: 3px solid rgba(129, 140, 248, 0.2);
+        border-top-color: #818cf8; border-radius: 50%;
+        animation: spin 0.8s linear infinite; margin-bottom: 16px;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      #app { opacity: 0; transition: opacity 0.4s ease; }
+      body.ready #app { opacity: 1; }
+      body.ready #global-loader { opacity: 0; visibility: hidden; pointer-events: none; }
+      body.ready { overflow: auto; }
+    </style>
+  </head>
+  <body>
+    <div id="global-loader">
+      <div class="spinner"></div>
+      <div style="font-weight: 500; font-size: 14px; letter-spacing: 0.5px;">Memuat Studio...</div>
+    </div>
+    <div id="app">
+      <!-- ─────────── Sidebar ─────────── -->
+      <aside class="sidebar" id="sidebar" aria-label="Panel samping">
+        <div class="sidebar-header">
+          <div class="logo" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20V4 M18 4 L7 12 L18 20"/></svg>
+          </div>
+          <h1>Karsa Studio</h1>
+          <button class="icon-btn" id="btn-toggle-sidebar" title="Tutup sidebar (⌘B)" data-i18n-title="btn_close_sidebar" aria-label="Tutup sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+        </div>
+
+        <nav class="sidebar-tabs" role="tablist">
+          <button class="sidebar-tab active" data-tab="docs" role="tab" data-i18n="tab_docs" data-i18n-title="tab_docs" title="Dokumen">Dokumen</button>
+          <button class="sidebar-tab" data-tab="templates" role="tab" data-i18n="tab_templates" data-i18n-title="tab_templates" title="Template">Template</button>
+          <button class="sidebar-tab" data-tab="style" role="tab" data-i18n="tab_style" data-i18n-title="tab_style" title="Style">Style</button>
+          <button class="sidebar-tab" data-tab="history" role="tab" data-i18n="tab_history" data-i18n-title="tab_history" title="Riwayat">Riwayat</button>
+        </nav>
+
+        <div class="sidebar-body">
+          <!-- Documents -->
+          <section class="sidebar-panel active" id="panel-docs">
+            <button class="btn btn-primary btn-block" id="btn-new-doc">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              <span data-i18n="new_doc">Diagram Baru</span>
+            </button>
+            <div class="search-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input type="search" id="doc-search" placeholder="Cari dokumen atau isi kode…" data-i18n-placeholder="search_doc" autocomplete="off" />
+            </div>
+
+            <div class="bulk-actions" id="doc-bulk-actions" style="display: none; align-items: center; gap: 6px; margin-bottom: 8px; padding: 6px 8px; background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+              <button class="btn btn-sm btn-ghost" id="btn-select-all" title="Pilih Semua" data-i18n-title="select_all">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+              </button>
+              <button class="btn btn-sm btn-ghost" id="btn-duplicate-selected" title="Duplikasi Terpilih" data-i18n-title="dup_selected">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="btn btn-sm btn-ghost danger" id="btn-delete-selected" title="Hapus Terpilih" data-i18n-title="del_selected">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+              </button>
+              <span class="bulk-count" id="bulk-count" style="font-size: 11px; color: var(--text-soft); margin-left: auto;">0 terpilih</span>
+            </div>
+
+            <div class="panel-subtitle" style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span data-i18n="all_docs">Semua dokumen</span> <span class="count" id="doc-count">0</span>
+              </div>
+              <div class="dropdown-wrap">
+                <button class="icon-btn sm" id="btn-doc-filter" data-dropdown="dropdown-bulk-delete" title="Pembersihan Dokumen" data-i18n-title="doc_cleanup">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                </button>
+                <div class="dropdown" id="dropdown-bulk-delete" role="menu" style="width: 170px; min-width: 170px;">
+                  <button class="dropdown-item" id="btn-del-week"><span class="dd-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span data-i18n="del_week">Hapus > 7 Hari</span></button>
+                  <button class="dropdown-item" id="btn-del-month"><span class="dd-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span data-i18n="del_month">Hapus > 30 Hari</span></button>
+                  <div class="dropdown-sep"></div>
+                  <button class="dropdown-item danger" id="btn-del-all"><span class="dd-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></span><span data-i18n="del_all">Hapus Semua</span></button>
+                </div>
+              </div>
+            </div>
+            <ul class="doc-list" id="doc-list"></ul>
+          </section>
+
+          <!-- Templates -->
+          <section class="sidebar-panel" id="panel-templates">
+            <div class="search-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input type="search" id="tpl-search" placeholder="Cari template…" data-i18n-placeholder="search_tpl" autocomplete="off" />
+            </div>
+            <div class="style-row compact">
+              <label for="tpl-mode" data-i18n="on_selected">Saat dipilih</label>
+              <select id="tpl-mode">
+                <option value="replace" data-i18n="replace_editor">Ganti isi editor</option>
+                <option value="new" data-i18n="new_doc">Buat dokumen baru</option>
+              </select>
+            </div>
+            <div id="template-container"></div>
+          </section>
+
+          <!-- Style -->
+          <section class="sidebar-panel" id="panel-style">
+            <div class="style-section">
+              <h3 data-i18n="color_presets">Preset Warna</h3>
+              <div class="preset-grid" id="preset-grid"></div>
+            </div>
+            <div class="style-section">
+              <h3>Tema &amp; Tampilan</h3>
+              <div class="style-row"><label for="sel-theme" data-i18n="theme_base">Tema dasar</label><select id="sel-theme"></select></div>
+              <div class="style-row"><label for="sel-look" data-i18n="style_type">Gaya</label>
+                <select id="sel-look"><option value="classic">Classic</option><option value="handDrawn">Hand-drawn</option><option value="neo">Neo</option></select></div>
+              <div class="style-row"><label for="sel-layout" data-i18n="layout_engine">Layout engine</label>
+                <select id="sel-layout"><option value="elk">ELK (default)</option><option value="dagre">Dagre</option></select></div>
+              <div class="style-row"><label for="sel-curve" data-i18n="edge_type">Bentuk garis</label><select id="sel-curve"></select></div>
+            </div>
+            <div class="style-section">
+              <h3 data-i18n="typography">Tipografi</h3>
+              <div class="style-row"><label for="sel-font" data-i18n="font_family">Font</label><select id="sel-font"></select></div>
+              <div class="style-row"><label for="rng-font-size" data-i18n="font_size">Ukuran</label>
+                <input type="range" id="rng-font-size" min="10" max="24" value="16" /><span class="range-val" id="lbl-font-size">16px</span></div>
+            </div>
+            <div class="style-section">
+              <h3><span data-i18n="custom_colors">Warna Kustom</span> <button class="link-btn" id="btn-reset-colors" data-i18n="reset_colors">Reset</button></h3>
+              <div class="color-vars" id="color-vars"></div>
+            </div>
+            <button class="btn btn-block btn-ghost-border" id="btn-reset-style" data-i18n="reset_style_default">Kembalikan style default</button>
+          </section>
+
+          <!-- History -->
+          <section class="sidebar-panel" id="panel-history">
+            <button class="btn btn-block" id="btn-snapshot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span data-i18n="save_snapshot">Simpan snapshot sekarang</span>
+            </button>
+            <p class="hint" data-i18n="history_hint">Snapshot otomatis dibuat berkala. Klik salah satu versi untuk memulihkannya.</p>
+            <ul class="history-list" id="history-list"></ul>
+            <div class="list-empty" id="history-empty" data-i18n="no_history">Belum ada snapshot untuk dokumen ini</div>
+          </section>
+        </div>
+
+        <footer class="sidebar-footer">
+          <button class="btn btn-sm btn-ghost" id="btn-import" title="Buka file" data-i18n-title="btn_import_tip">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span data-i18n="import_btn">Import</span>
+          </button>
+          <div style="position: relative;">
+            <button class="btn btn-sm btn-ghost" data-dropdown="dropdown-export-sidebar" title="Export" data-i18n-title="btn_export_tip">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span data-i18n="export_btn">Export</span>
+            </button>
+            <div class="dropdown" id="dropdown-export-sidebar" role="menu" style="bottom: 100%; left: 0; margin-bottom: 8px;">
+              <div class="dropdown-label" data-i18n="exp_image">Gambar</div>
+              <button class="dropdown-item" data-action="export-svg"><span class="dd-icon">◫</span><span data-i18n="exp_svg">SVG (vektor)</span><span class="dd-shortcut">⇧⌘E</span></button>
+              <button class="dropdown-item" data-action="export-png"><span class="dd-icon">▣</span><span data-i18n="exp_png">PNG · 2x</span></button>
+              <button class="dropdown-item" data-action="export-png-4x"><span class="dd-icon">▣</span><span>PNG · 4x (resolusi tinggi)</span></button>
+              <button class="dropdown-item" data-action="export-jpg"><span class="dd-icon">▤</span><span>JPEG</span></button>
+              <button class="dropdown-item" data-action="export-pdf"><span class="dd-icon">⎙</span><span data-i18n="exp_pdf">PDF / Print</span></button>
+              <label class="dropdown-check"><input type="checkbox" id="chk-transparent-sidebar" /> Background transparan (SVG/PNG)</label>
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-label" data-i18n="tab_code">Kode / Project</div>
+              <button class="dropdown-item" data-action="export-karsa"><span class="dd-icon">⤓</span><span data-i18n="exp_mmd">Unduh Dokumen (.krs)</span></button>
+              <button class="dropdown-item" data-action="export-project-karsa"><span class="dd-icon">📚</span><span data-i18n="exp_project">Unduh Seluruh Project (.karsa)</span></button>
+              <button class="dropdown-item" data-action="export-code"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_code">Salin kode Karsa</span></button>
+              <button class="dropdown-item" data-action="export-md"><span class="dd-icon">M↓</span><span data-i18n="exp_copy_md">Salin sebagai Markdown</span></button>
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-label" data-i18n="exp_clipboard">Clipboard</div>
+              <button class="dropdown-item" data-action="copy-png"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_png">Salin gambar PNG</span></button>
+              <button class="dropdown-item" data-action="copy-svg"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_svg2">Salin markup SVG</span></button>
+            </div>
+          </div>
+          <span class="flex-1"></span>
+          <button class="icon-btn" id="btn-settings" title="Pengaturan" data-i18n-title="btn_settings_tip" aria-label="Pengaturan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </footer>
+      </aside>
+
+      <!-- ─────────── Main ─────────── -->
+      <main class="main-area">
+        <header class="toolbar">
+          <button class="icon-btn" id="btn-open-sidebar" title="Sidebar (⌘B)" data-i18n-title="btn_open_sidebar" aria-label="Toggle sidebar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
+          </button>
+          <input class="doc-title-input" id="doc-title" value="" spellcheck="false" aria-label="Judul dokumen" />
+          <span class="toolbar-spacer"></span>
+
+          <div class="segmented" role="group" aria-label="Mode tampilan">
+            <button data-layout="editor" title="Editor saja" data-i18n-title="layout_editor">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></button>
+            <button data-layout="split" title="Split editor + preview" data-i18n-title="layout_split">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></svg></button>
+            <button data-layout="preview" title="Preview saja" data-i18n-title="layout_preview">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="segmented hide-mobile" role="group" aria-label="Orientasi split">
+            <button data-orient="horizontal" title="Berdampingan" data-i18n-title="orient_horiz">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="16" rx="1.5"/><rect x="14" y="4" width="7" height="16" rx="1.5"/></svg></button>
+            <button data-orient="vertical" title="Atas-bawah" data-i18n-title="orient_vert">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/></svg></button>
+          </div>
+
+          <button class="btn btn-sm" id="btn-render" title="Render" data-i18n-title="btn_render_tip" style="display:none;">▶ Render</button>
+
+          <div class="dropdown-wrap">
+            <button class="btn btn-sm btn-primary" data-dropdown="dropdown-export" id="btn-export">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              <span data-i18n="export_btn">Export</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dropdown" id="dropdown-export" role="menu">
+              <div class="dropdown-label" data-i18n="exp_image">Gambar</div>
+              <button class="dropdown-item" data-action="export-svg"><span class="dd-icon">◫</span><span data-i18n="exp_svg">SVG (vektor)</span><span class="dd-shortcut">⇧⌘E</span></button>
+              <button class="dropdown-item" data-action="export-png"><span class="dd-icon">▣</span><span data-i18n="exp_png">PNG · 2x</span></button>
+              <button class="dropdown-item" data-action="export-png-4x"><span class="dd-icon">▣</span><span>PNG · 4x (resolusi tinggi)</span></button>
+              <button class="dropdown-item" data-action="export-jpg"><span class="dd-icon">▤</span><span>JPEG</span></button>
+              <button class="dropdown-item" data-action="export-pdf"><span class="dd-icon">⎙</span><span data-i18n="exp_pdf">PDF / Print</span></button>
+              <label class="dropdown-check"><input type="checkbox" id="chk-transparent" /> Background transparan (SVG/PNG)</label>
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-label" data-i18n="tab_code">Kode / Project</div>
+              <button class="dropdown-item" data-action="export-karsa"><span class="dd-icon">⤓</span><span data-i18n="exp_mmd">Unduh Dokumen (.krs)</span></button>
+              <button class="dropdown-item" data-action="export-project-karsa"><span class="dd-icon">📚</span><span data-i18n="exp_project">Unduh Seluruh Project (.karsa)</span></button>
+              <button class="dropdown-item" data-action="export-code"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_code">Salin kode Karsa</span></button>
+              <button class="dropdown-item" data-action="export-md"><span class="dd-icon">M↓</span><span data-i18n="exp_copy_md">Salin sebagai Markdown</span></button>
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-label" data-i18n="exp_clipboard">Clipboard</div>
+              <button class="dropdown-item" data-action="copy-png"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_png">Salin gambar PNG</span></button>
+              <button class="dropdown-item" data-action="copy-svg"><span class="dd-icon">⧉</span><span data-i18n="exp_copy_svg2">Salin markup SVG</span></button>
+            </div>
+          </div>
+
+          <a class="btn btn-sm btn-primary" href="/docs.html" target="_blank" title="Referensi Sintaks" data-i18n-title="docs_link_tip" style="text-decoration: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span data-i18n="docs_btn">Docs</span>
+          </a>
+
+          <span class="toolbar-sep"></span>
+          <!-- Lang Dropdown -->
+          <div class="dropdown-wrap" id="lang-dropdown">
+            <button class="icon-btn" aria-label="Language" title="Language" data-i18n-title="lang_tip" id="btn-lang" data-dropdown="dropdown-lang" style="width: auto; padding: 0 10px; font-weight: 500; font-size: 13px; display: flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.8;"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+              <span id="lang-text">EN</span>
+            </button>
+            <div class="dropdown right" id="dropdown-lang" role="menu">
+              <button class="dropdown-item" data-lang="en">English</button>
+              <button class="dropdown-item" data-lang="id">Bahasa Indonesia</button>
+              <button class="dropdown-item" data-lang="zh">中文 (Mandarin)</button>
+              <button class="dropdown-item" data-lang="ja">日本語 (Japanese)</button>
+              <button class="dropdown-item" data-lang="ru">Русский (Russian)</button>
+            </div>
+          </div>
+          <button class="icon-btn" id="btn-theme-toggle" title="Tema terang / gelap" data-i18n-title="btn_theme_tip" aria-label="Ganti tema"></button>
+          <button class="icon-btn" id="btn-shortcuts" title="Keyboard shortcuts" data-i18n-title="btn_shortcuts_tip" aria-label="Keyboard shortcuts">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>
+          </button>
+        </header>
+
+        <div class="workspace" id="workspace">
+          <!-- Editor -->
+          <section class="editor-panel" id="editor-panel" aria-label="Editor">
+            <div class="panel-tabs">
+              <button class="editor-tab active" data-editor-tab="code">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg><span data-i18n="tab_code">Kode</span></button>
+              <button class="editor-tab" data-editor-tab="config">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg><span data-i18n="tab_config">Config</span></button>
+              <span class="flex-1"></span>
+
+            </div>
+            <div class="editor-container" id="editor-code-wrap"><div id="editor-code"></div></div>
+            <div class="editor-container" id="editor-config-wrap" style="display:none;"><div id="editor-config"></div></div>
+            <div class="quick-insert" id="quick-insert"></div>
+          </section>
+
+          <div class="resize-handle" id="resize-handle" title="Geser untuk mengubah ukuran" data-i18n-title="resize_hint"></div>
+
+          <!-- Preview -->
+          <section class="preview-panel" id="preview-panel" aria-label="Preview">
+            <div class="panel-tabs preview-toolbar">
+              <div class="zoom-group">
+                <button class="icon-btn sm" id="btn-zoom-out" title="Zoom out" data-i18n-title="zoom_out">−</button>
+                <span class="zoom-text" id="zoom-text">100%</span>
+                <button class="icon-btn sm" id="btn-zoom-in" title="Zoom in" data-i18n-title="zoom_in">+</button>
+              </div>
+              <button class="btn btn-sm btn-ghost" id="btn-zoom-fit" title="Fit ke layar (⌘0 / klik ganda)" data-i18n="zoom_fit" data-i18n-title="zoom_fit_tip">Fit</button>
+              <button class="btn btn-sm btn-ghost" id="btn-zoom-reset" title="Ukuran asli" data-i18n="zoom_reset" data-i18n-title="zoom_reset_tip">1:1</button>
+              <span class="render-indicator" id="render-indicator" title="Merender..." data-i18n-title="render_indicator"></span>
+              <span class="flex-1"></span>
+              <select class="select-sm" id="sel-canvas-bg" aria-label="Background kanvas">
+                <option value="dots" data-i18n="bg_dots">Titik</option>
+                <option value="grid" data-i18n="bg_grid">Grid</option>
+                <option value="plain" data-i18n="bg_plain">Polos</option>
+                <option value="transparent" data-i18n="bg_transparent">Kotak-kotak</option>
+              </select>
+              <button class="icon-btn sm" id="btn-fullscreen" title="Layar penuh" data-i18n-title="btn_fullscreen" aria-label="Layar penuh">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+              </button>
+            </div>
+            <div class="preview-canvas bg-dots" id="preview-canvas">
+              <div class="preview-svg-wrap" id="preview-svg"></div>
+              <div class="preview-empty" id="preview-empty" style="display:none;">
+                <div class="empty-icon">◇</div>
+                <div>Tulis kode Mermaid di editor, atau pilih template di sidebar</div>
+              </div>
+              <div class="preview-error" id="preview-error" style="display:none;" role="alert">
+                <div class="err-head"><span class="err-icon">!</span> <span data-i18n="err_syntax">Error sintaks</span></div>
+                <pre class="err-msg" id="err-msg"></pre>
+                <button class="err-line" id="err-line" style="display:none;"></button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="status-bar" id="status-bar">
+          <span class="status-item" id="status-type"></span>
+          <span class="status-item" id="status-cursor">Ln 1, Col 1</span>
+          <span class="status-item" id="status-lines"></span>
+          <span class="status-item status-warn" id="status-config" style="display:none;" data-i18n="config_invalid"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; display: inline-block; vertical-align: text-bottom;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Config JSON tidak valid - diabaikan</span>
+          <span class="flex-1"></span>
+          <span class="status-item" id="status-render"></span>
+          <span class="status-item" id="status-saved"><span class="dot dot-ok"></span> <span data-i18n="saved">Tersimpan</span></span>
+        </footer>
+      </main>
+    </div>
+
+    <!-- ─────────── Modals ─────────── -->
+
+
+    <div class="modal-backdrop" id="modal-shortcuts">
+      <div class="modal" role="dialog" aria-labelledby="sc-title">
+        <div class="modal-header"><span id="sc-title" data-i18n="sc_title">Keyboard shortcuts</span>
+          <button class="icon-btn modal-close" data-close-modal="modal-shortcuts" aria-label="Tutup">✕</button></div>
+        <div class="modal-body"><table class="shortcut-table" id="shortcut-table"></table></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="modal-settings">
+      <div class="modal" role="dialog" aria-labelledby="set-title">
+        <div class="modal-header"><span id="set-title" data-i18n="set_title">Pengaturan</span>
+          <button class="icon-btn modal-close" data-close-modal="modal-settings" aria-label="Tutup">✕</button></div>
+        <div class="modal-body" id="settings-body"></div>
+      </div>
+    </div>
+    
+    <div class="modal-backdrop" id="modal-confirm" style="z-index: 100000;">
+      <div class="modal" role="dialog" aria-labelledby="confirm-title" style="max-width: 400px;">
+        <div class="modal-header">
+          <span id="confirm-title" style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span data-i18n="confirm_title">Konfirmasi</span>
+          </span>
+          <button class="icon-btn modal-close" data-close-modal="modal-confirm" aria-label="Tutup">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirm-message" style="margin: 0 0 20px 0; font-size: 14px; color: var(--text-soft); line-height: 1.5;"></p>
+          <div style="display: flex; gap: 12px; justify-content: flex-end;">
+            <button class="btn btn-ghost" id="btn-confirm-cancel" data-i18n="cancel">Batal</button>
+            <button class="btn btn-primary" style="background: var(--danger);" id="btn-confirm-ok" data-i18n="yes_delete">Ya, Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="modal-import" style="z-index: 100000;">
+      <div class="modal" role="dialog" aria-labelledby="import-title" style="max-width: 440px;">
+        <div class="modal-header">
+          <span id="import-title" style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            <span data-i18n="import_title">Import Project</span>
+          </span>
+          <button class="icon-btn modal-close" data-close-modal="modal-import" aria-label="Tutup">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="import-message" style="margin: 0 0 20px 0; font-size: 14px; color: var(--text-soft); line-height: 1.5;"></p>
+          <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+            <button class="btn btn-ghost" id="btn-import-cancel" data-i18n="cancel">Batal</button>
+            <button class="btn btn-primary" style="background: var(--success); color: #fff; border-color: transparent;" id="btn-import-append" data-i18n="import_append">Tambahkan ke saat ini</button>
+            <button class="btn btn-primary" style="background: var(--warning); color: #fff; border-color: transparent;" id="btn-import-replace" data-i18n="import_replace">Timpa (Replace All)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="drop-overlay" aria-hidden="true">
+      <div class="drop-card">
+        <div class="drop-icon">⤓</div>
+        <div data-i18n="drop_file">Lepaskan file untuk membuka</div>
+        <small>.karsa · .krs · .mermaid · .md · .txt</small>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+    <input type="file" id="file-import" accept=".json,.karsa,.krs,.mermaid,.md,.txt" multiple hidden />
+
+    <div class="theme-overlay" id="theme-overlay">
+      <div class="theme-spinner"></div>
+      <div class="theme-loading-text" data-i18n="theme_loading">Menyesuaikan Tampilan...</div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
