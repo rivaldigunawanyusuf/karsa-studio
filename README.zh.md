@@ -1,126 +1,217 @@
 # Karsa Studio
 
-**Karsa Studio** 是一款功能全面、专业的 *文本到图表 (Text-to-Diagram)* 编辑器，作为**开源 (非商业)** 项目发布。该应用程序极其轻量级、速度极快，并且完全在用户的浏览器内（100% 客户端）处理所有数据。该项目的主要目标是通过简单地编写代码来帮助开发人员、系统架构师、项目经理以及任何需要快速可视化想法、架构和工作流的人，而无需手动绘图。
+<p align="center">
+  <img src="public/favicon.svg" width="96" height="96" alt="Karsa Studio 徽标" />
+</p>
 
-可直接访问该应用程序：**[karsa-studio.rivaldigunawanyusuf.com](https://karsa-studio.rivaldigunawanyusuf.com)**
+<p align="center">
+  <strong>现代化、极速、100% 客户端运行的文本转图表 (Text-to-Diagram) 演练场</strong>
+</p>
 
-## 核心功能
+<p align="center">
+  <a href="README.md">English</a> •
+  <a href="README.id.md">Bahasa Indonesia</a> •
+  <a href="README.zh.md">中文 (Mandarin)</a> •
+  <a href="README.ja.md">日本語 (Japanese)</a> •
+  <a href="README.ru.md">Русский (Russian)</a>
+</p>
 
-- **100% 客户端和离线优先：** 所有图表渲染都直接在您的浏览器中执行。作为 PWA (渐进式 Web 应用) 提供支持，首次加载后可完全离线使用。服务器零负载，没有数据发送到外部服务器。
-- **独家扩展系统：** 支持标准的 `.mermaid`、`.md` 和 `.txt` 文件。它还引入了专有文件扩展名：用于保存单个文档的 `.krs`，以及用于保存多文档项目的 `.karsa`。
-- **多语言 (i18n)：** 原生支持 5 种语言：英语、印尼语、中文、日语和俄语，可实时切换。
-- **本地文档管理：** 您可以同时创建多个图表文档。轻松选择多个文档进行批量复制或批量删除。所有数据都会自动保存到您浏览器的 `localStorage` 中。
-- **丰富的模板：** 几十个经过优化的行业标准模板（架构图、流程图、ER 图、甘特图、思维导图等）。
-- **动态主题与自定义：** 支持深色/浅色模式、字体设置、布局引擎调整和自定义样式功能。
-- **高质量导出：** 一键将图表导出为各种格式，如 SVG (矢量图)、高分辨率 PNG (最高 4x HD)、PDF，或立即复制其代码。
-- **响应式和跨设备：** 界面设计灵活，支持各种屏幕尺寸。在桌面和移动设备上都能流畅运行。
+<p align="center">
+  <img src="https://img.shields.io/badge/许可证-CC%20BY--NC%204.0-blue.svg" alt="许可证: CC BY-NC 4.0" />
+  <img src="https://img.shields.io/badge/架构-100%25%20客户端-brightgreen.svg" alt="100% 客户端" />
+  <img src="https://img.shields.io/badge/PWA-离线优先-orange.svg" alt="PWA 离线优先" />
+  <img src="https://img.shields.io/badge/Mermaid.js-v12+-blueviolet.svg" alt="Mermaid.js v12+" />
+  <img src="https://img.shields.io/badge/编辑器-CodeMirror%206-informational.svg" alt="CodeMirror 6" />
+</p>
 
 ---
 
-## 本地安装与运行 (Mac / Linux / Windows)
+**Karsa Studio** 是一款功能全面、专业的*文本转图表 (Text-to-Diagram)* 编辑器，作为**开源 (非商业)** 项目发布。它的渲染与解析完全在您的浏览器内进行（100% 客户端处理），这意味着没有任何图表数据会上传到外部服务器。它将基于代码的图表灵活性与类 Figma 的直观画布交互融为一体，旨在赋能软件工程师、系统架构师、产品经理和技术写作者，在数秒内将复杂思路与系统架构转化为高品质的视觉图表。
 
-由于该应用程序不需要后端服务器，您可以使用标准的开发服务器运行它，或者将其部署到任何静态托管服务。
+🌐 **在线体验:** [karsa-studio.rivaldigunawanyusuf.com](https://karsa-studio.rivaldigunawanyusuf.com)
 
-### 环境要求
-- [Node.js](https://nodejs.org/) (版本 16 或更高)
+---
 
-### 1. 快速启动 (自动脚本)
-我们在根目录中提供了帮助脚本，该脚本会自动检查 Node.js、安装依赖项、寻找可用端口并启动本地服务器。
+## 🚀 核心亮点与特色功能
 
-**Mac OS / Linux 用户：**
+### 🔒 100% 客户端运行，严守隐私与离线优先 (PWA)
+- **零服务端延迟:** 图表渲染与语法分析完全依托本地 Web Worker 与浏览器原生 JavaScript 执行。
+- **隐私设计:** 您的私有系统架构图、数据库模式和专有业务逻辑永远不会离开您的本地设备。
+- **渐进式 Web 应用 (PWA):** 可直接作为桌面或移动端独立 App 安装，初次加载后可在断网环境下完全离线使用。
+
+### 🎨 Figma 风格交互式画布
+- **Space + 拖拽平移画布:** 按住 `空格键 (Space)` 并按住鼠标左键/触控板拖动，即可在无限画布上丝滑平移，与 Figma、Miro 操作习惯完全一致。
+- **直观缩放体验:** 支持 `Ctrl/Cmd + 滚轮` 平滑缩放、触控板双指捏合缩放或画布底部浮动工具栏缩放。
+- **快捷视角对齐:** 支持 1:1 实际比例视角 (`Cmd/Ctrl + 1`) 与全局自适应居中 (`Cmd/Ctrl + 0` 或双击画布空白处)。
+- **多样化画布背景:** 支持点状网格 (Dots)、线条网格 (Grid)、纯色平铺 (Plain) 与透明背景 (Transparent)。
+
+### 💻 专业的 CodeMirror 6 编辑器
+- **现代语法高亮与实时校验:** 实时检测 Mermaid 语法错误，提供行号错误指示器与即时提示框。
+- **桌面与移动端顺畅滚动:** 严谨的视口高度与 CSS 弹性容器约束，支持滚轮、触控板惯性滚动以及移动端触摸滑动。
+- **快速插入工具栏:** 一键快速插入节点、菱形判断框、子图 (Subgraph)、数据库圆柱体、圆圈、虚线链接及粗箭头。
+- **专业级代码编辑能力:** 多光标编辑 (`Alt + 点击`)、代码块折叠、括号自动补全、行注释切换 (`Cmd/Ctrl + /`) 与全文查找替换 (`Cmd/Ctrl + F`)。
+- **灵活自适应布局:** 分屏模式支持自由拖拽调节宽度、支持横屏/竖屏方向切换，并具备一键全屏代码编辑或全屏图表预览模式。
+
+### 📚 内置 24 套行业级精选图表模板
+开箱即用的专业模板，按 6 大场景清晰分类：
+1. **流程与状态 (Flowcharts & Process):** 标准流程图、架构流程图 (LR 横向)、状态机模型。
+2. **数据库与代码 (Databases & Code):** 关系型数据库 ER 图 (PK/FK)、面向对象类图、需求追踪矩阵、网络数据包字节布局。
+3. **交互与系统 (Interactions & Systems):** 时序图 (认证鉴权流程)、云系统架构图、C4 系统上下文架构、自由块状系统图。
+4. **规划与路线 (Planning & Roadmap):** 甘特图项目进度排期、产品历史时间线、用户旅程图、看板任务面板、Git 分支与合并图。
+5. **分析与数据 (Analytics & Data):** 饼图占比分布、XY 轴折线/柱状指标图、2x2 象限优先级矩阵、桑基能源/资源流动图、雷达图属性分析、矩形树图 (Treemap)。
+6. **构思与头脑风暴 (Ideation):** 树状思维导图 (Mindmap) 与空白初始画布。
+
+### 🎭 视觉主题引擎与深度样式定制
+- **深色与浅色模式:** 优雅的深色玻璃拟态 (Glassmorphism) 与高对比度浅色模式无缝切换。
+- **Mermaid 原生基础主题:** 支持 Default、Neutral、Forest、Dark 与 Base 主题。
+- **艺术风格预设:** 手绘草图 (Sketch)、极简 (Minimal)、现代 (Modern)、新拟物 (Neumorphic)、赛博朋克 (Cyberpunk)、复古 (Retro)、柔和马卡龙 (Pastel) 与高对比度。
+- **先进图布局引擎:** 支持传统 Dagre 算法以及适用于复杂网络的 ELK (Eclipse Layout Kernel) 算法。
+- **自定义色彩调色板:** 实时微调主色、次色、文本色、线条色、边框色、子图背景与注释配色。
+
+### 📤 多格式导出与零后端加密分享
+- **矢量与超清位图导出:** 支持无损矢量 SVG、超清 PNG (最高 4x 视网膜清晰度) 及标准 PDF 格式。
+- **一键快捷剪贴板:** 直接将 Mermaid 源码、Markdown 嵌入块 (兼容 Notion、GitHub、Obsidian)、SVG 代码或 PNG 图像复制到剪贴板。
+- **零服务端加密链接分享:** 基于 URL 锚点哈希与 `pako` zlib 算法压缩打包图表数据，无需任何数据库即可还原完整图表与样式设置。
+- **工程备份与恢复:** 独立导出单个 `.krs` / `.mmd` 文件，或将整个多文档工作区打包备份为 `.karsa` / `.json`。
+
+### 🌐 5 种语言全面本地化 (i18n)
+无感即时切换，涵盖所有交互文案与 24 个模板说明：
+- 🇨🇳 **中文 (Mandarin)**
+- 🇬🇧 **English**
+- 🇮🇩 **Bahasa Indonesia**
+- 🇯🇵 **日本語 (Japanese)**
+- 🇷🇺 **Русский (Russian)**
+
+---
+
+## ⌨️ 常用快捷键速查表
+
+快捷键修饰符会根据您的操作系统自动适配（macOS 为 **⌘ Cmd**，Windows 与 Linux 为 **Ctrl**）：
+
+| 分类 | 操作说明 | Mac 快捷键 | Windows / Linux 快捷键 |
+| :--- | :--- | :--- | :--- |
+| **画布** | **平移 / 拖拽画布** | `Space + 拖动` | `Space + 拖动` |
+| **画布** | **放大 / 缩小** | `Cmd + =` / `Cmd + -` | `Ctrl + =` / `Ctrl + -` |
+| **画布** | **适应当前视口** | `Cmd + 0` *(或双击画布)* | `Ctrl + 0` *(或双击画布)* |
+| **画布** | **实际尺寸 (1:1)** | 点击界面 `1:1` 按钮 | 点击界面 `1:1` 按钮 |
+| **编辑器** | **保存快照并渲染** | `Cmd + S` | `Ctrl + S` |
+| **编辑器** | **强制立即重绘** | `Cmd + Enter` | `Ctrl + Enter` |
+| **编辑器** | **查找与替换** | `Cmd + F` | `Ctrl + F` |
+| **编辑器** | **切换代码注释** | `Cmd + /` | `Ctrl + /` |
+| **编辑器** | **撤销 / 重做** | `Cmd + Z` / `Cmd + Shift + Z` | `Ctrl + Z` / `Ctrl + Y` |
+| **编辑器** | **增加 / 减少缩进** | `Tab` / `Shift + Tab` | `Tab` / `Shift + Tab` |
+| **编辑器** | **多光标同时编辑** | `Alt + 点击` | `Alt + 点击` |
+| **编辑器** | **折叠 / 展开代码块** | `Cmd + Alt + [` | `Ctrl + Alt + [` |
+| **编辑器** | **代码自动提示补全** | `Ctrl + Space` | `Ctrl + Space` |
+| **应用** | **新建空白文档** | `Alt + N` | `Alt + N` |
+| **应用** | **展开 / 折叠侧边栏** | `Cmd + B` | `Ctrl + B` |
+| **应用** | **快捷导出 SVG** | `Cmd + Shift + E` | `Ctrl + Shift + E` |
+| **应用** | **打开快捷键指南** | `?` | `?` |
+
+---
+
+## 🛠️ 本地安装与开发指南
+
+由于 Karsa Studio 没有任何后端或数据库依赖，在本地运行极其快捷：
+
+### 环境准备
+- [Node.js](https://nodejs.org/) (建议版本 18+)
+- 包管理器 `npm`、`pnpm` 或 `yarn`
+
+### 1. 自动化启动脚本
+
+**macOS / Linux:**
 ```bash
-# 使脚本具有可执行权限 (仅需一次)
+# 赋予执行权限 (仅初次需要)
 chmod +x start.sh
 
-# 运行脚本
+# 运行自动化脚本
 ./start.sh
 ```
 
-**Windows 用户：**
-只需在文件资源管理器中双击 `start.bat` 文件，或者通过命令提示符 (CMD) / PowerShell 运行它：
+**Windows:**
+在文件资源管理器中双击 `start.bat`，或在命令行运行：
 ```cmd
 start.bat
 ```
 
-### 2. 手动启动 (逐步指南)
-如果您更喜欢手动运行，或者自动脚本失败，请在终端中按照以下步骤操作 (兼容 Mac、Linux 和 Windows)：
-
+### 2. 手动启动步骤
 ```bash
-# 1. 进入项目文件夹
-cd mermaid-studio
+# 克隆代码仓库
+git clone https://github.com/rivaldigunawanyusuf/karsa-studio.git
+cd karsa-studio
 
-# 2. 安装依赖项 (仅第一次需要)
+# 安装依赖
 npm install
 
-# 3. 运行开发服务器
+# 启动 Vite 本地开发服务器
 npm run dev
+```
 
-# 4. 打开浏览器并访问终端中提供的 URL (通常是 http://localhost:5173)
+在浏览器中打开 `http://localhost:5173/` 即可开始使用。
+
+---
+
+## 📂 项目结构剖析
+
+```
+mermaid-studio/
+├── index.html              # 单页应用 (SPA) 主入口与结构
+├── docs.html               # 交互式 Mermaid 语法速查与文档说明
+├── nginx-security.conf     # Nginx 反向代理配置与生产安全响应头规范
+├── package.json            # 依赖包声明与 npm 构建脚本
+├── vite.config.js          # Vite 构建流水线与 PWA 离线缓存配置
+├── start.sh                # macOS / Linux 自动化启动脚本
+├── start.bat               # Windows 自动化启动批处理脚本
+├── public/                 # 静态资源、矢量图标与 PWA manifest
+└── src/
+    ├── main.js             # 应用主调度器与全局事件交互中心
+    ├── styles/
+    │   └── index.css       # 设计系统变量规范、毛玻璃 UI 与响应式适配
+    └── lib/
+        ├── editor.js       # CodeMirror 6 初始化、代码校验及扩展
+        ├── exporter.js     # 高清矢量 SVG、4x PNG 与 PDF 导出渲染模块
+        ├── i18n.js         # 5 种语言完整词典与实时无刷新翻译引擎
+        ├── mermaid-lang.js # 基于 Lezer 语法的 Mermaid 语言解析规则
+        ├── renderer.js     # Mermaid.js 与 ELK 图布局计算驱动器
+        ├── share.js        # 基于 pako zlib 的无状态压缩 URL 分享编码
+        ├── store.js        # 基于 LocalStorage 与响应式 EventTarget 的状态中心
+        ├── templates.js    # 24 款行业级精美图表模板集合
+        ├── themes.js       # 视觉配色、艺术风格预设与布局选项
+        └── ui.js           # 浮动提示 (Toast)、弹窗及辅助视图组件
 ```
 
 ---
 
-## 键盘快捷键
+## 🚀 生产环境部署 (Production Deployment)
 
-Karsa Studio 支持标准的键盘快捷键，以加快您的工作流程。修饰键会根据您的操作系统自动调整：
-- **Mac OS:** 使用 `Cmd (⌘)` 键。
-- **Windows / Linux:** 使用 `Ctrl` 键。
+Karsa Studio 最终编译输出为纯粹、高度优化的**静态单页应用 (SPA)**：
 
-| 操作 | 快捷键 (Mac) | 快捷键 (Windows/Linux) |
-| :--- | :--- | :--- |
-| **保存 / 渲染图表** | `Cmd + S` | `Ctrl + S` |
-| **撤销代码编辑** | `Cmd + Z` | `Ctrl + Z` |
-| **重做代码编辑** | `Cmd + Shift + Z` | `Ctrl + Y` 或 `Ctrl + Shift + Z` |
-| **在编辑器中查找** | `Cmd + F` | `Ctrl + F` |
-| **在编辑器中替换** | `Cmd + Option + F` | `Ctrl + H` |
+```bash
+# 编译生产打包代码
+npm run build
+```
 
-该应用程序将在 `http://localhost:5173/` 运行。
-
----
-
-## 生产环境部署 (非常简单)
-
-Karsa 是专门作为 **静态站点应用程序 (SPA)** 设计的。您可以免费托管它，无需租用昂贵的数据库服务器或 VPS。
-
-1. 运行构建过程：
-   ```bash
-   npm run build
-   ```
-2. 这将生成一个包含静态文件 (HTML、CSS 和压缩后的 JS) 的 `dist/` 文件夹。
-3. 您可以直接将此 `dist/` 文件夹上传到您喜欢的静态托管服务 (例如 Vercel、Netlify、GitHub Pages)。
-4. 别忘了将您的域名 (karsa-studio.rivaldigunawanyusuf.com) 指向该托管服务。
-
-当用户访问您的网站时，他们的浏览器将承担工作负载 (图表渲染)，确保您的网站在面对大规模流量激增时具有高度弹性，而不会使服务器超载！
+该命令将在 `dist/` 目录下生成打包产物。您可以将 `dist/` 部署至任意静态网站托管平台：
+- **Cloudflare Pages**
+- **Vercel**
+- **Netlify**
+- **GitHub Pages**
+- **自主搭建的 Nginx / Apache / Caddy** (可直接引入 `nginx-security.conf` 启用安全标头如 CSP、HSTS 及 MIME 防嗅探)。
 
 ---
 
-## 技术栈
+## 📄 许可证与使用协议 (License)
 
-- **前端构建工具:** Vite - 极速的开发体验。
-- **图表引擎:** 基于 JS 的文本到图表引擎 (客户端渲染)。
-- **代码编辑器:** CodeMirror 6 - 提供舒适的代码输入体验 (带语法高亮)。
-- **状态管理:** 使用与 `localStorage` 集成的 `EventTarget` 架构定制构建 (极轻量级)。
-- **图像导出:** 使用 HTML5 Canvas API 和 PDF 渲染模块。
-- **UI 设计:** 原生 CSS (自定义属性/变量) 和毛玻璃 (Glassmorphism) UI，易于维护，无需繁重的 CSS 框架。
+本项目采用 **知识共享署名-非商业性使用 4.0 国际许可协议 (CC BY-NC 4.0)**。
+
+- **您可以自由：** 分享、复刻并根据个人学习、非营利内部工具、学术研究或开源贡献需要修改源代码。
+- **必须遵守以下条款：** 必须保留作者署名。**严禁将本项目或其衍生版本用于商业盈利目的，严禁作为付费产品转售或商业化运营。** 商业权益归原作者所有。
 
 ---
 
-## 许可证
+## 👤 原作者与鸣谢
 
-本项目采用 **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** 许可协议。
+由 **Rivaldi Gunawan Yusuf** 用心打造。特别致谢优秀的开源项目 [Mermaid.js](https://mermaid.js.org/) 与 [CodeMirror](https://codemirror.net/)！
 
-**这意味着：**
-您被允许下载、学习、修改和使用 Karsa 用于个人项目、内部非营利性工具、开源贡献或作品集。
-**但是，严禁** 将此应用程序或其源代码用于商业目的、转售或以任何形式将其货币化 (将其变成付费产品)。所有商业权利均由原作者独家保留。
-
-**享受创作！** 随时探索并在 Karsa 的设计基础上进行构建。
-
----
-
-## 关于本项目
-
-Karsa Studio 是在 Mermaid.js 生态系统之上开发的图表编辑器 (前端界面)。该应用程序利用 Mermaid 的渲染引擎和脚本语法来动态地将图表可视化。
-
-该项目最初是为个人内部需求而创建的，旨在通过自定义的界面简化图表创建过程。
-
-目前，该项目是开源的，任何人都可以使用。您可以在 `karsa-studio.rivaldigunawanyusuf.com` 免费访问和使用此应用程序。
+如有任何改进建议或疑问，欢迎在 GitHub 上提出 Issue 或交流探讨。

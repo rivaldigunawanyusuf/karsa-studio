@@ -514,8 +514,38 @@ input[type="color"] { width: 28px; height: 28px; border: 2px solid var(--border)
   position: relative;
   min-height: 0;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
-.editor-container .cm-editor { height: 100%; }
+
+#editor-code,
+#editor-config {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-container .cm-editor {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  width: 100%;
+  outline: none;
+}
+
+.editor-container .cm-scroller {
+  flex: 1;
+  min-height: 0;
+  overflow: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
 
 /* Quick insert bar */
 .quick-insert {
@@ -1001,8 +1031,30 @@ select:disabled { opacity: .45; cursor: not-allowed; }
 /* Canvas adapts to the diagram's own theme so text stays readable */
 .preview-canvas.diagram-light { --canvas-bg: #f7f8fb; --canvas-dot: rgba(15,23,42,.11); --canvas-grid: rgba(15,23,42,.06); }
 .preview-canvas.diagram-dark  { --canvas-bg: #0f1017; --canvas-dot: rgba(255,255,255,.07); --canvas-grid: rgba(255,255,255,.045); }
-.preview-canvas.panning { cursor: grabbing; }
-.preview-canvas:active { cursor: grab; }
+.preview-canvas.panning,
+.preview-canvas:active,
+body.is-panning .preview-canvas {
+  cursor: grabbing !important;
+}
+
+/* Figma-style Space-pan mode */
+.preview-canvas.space-active,
+body.space-pan-active .preview-canvas {
+  cursor: grab !important;
+}
+.preview-canvas.space-active.panning,
+body.space-pan-active .preview-canvas.panning,
+body.is-panning {
+  cursor: grabbing !important;
+}
+.preview-canvas.space-active *,
+body.space-pan-active .preview-canvas * {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+body.is-panning {
+  user-select: none !important;
+}
 .preview-svg-wrap { transition: opacity 200ms, filter 200ms; }
 .preview-canvas.has-error .preview-svg-wrap { opacity: .25; filter: grayscale(1); }
 

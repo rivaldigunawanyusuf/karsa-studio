@@ -265,12 +265,30 @@ on(canvas, 'wheel', (e) => {
 }, { passive: false });
 
 let pan = null;
+let isSpacePressed = false;
+
+function setSpacePan(active) {
+  if (isSpacePressed === active) return;
+  isSpacePressed = active;
+  canvas.classList.toggle('space-active', active);
+  document.body.classList.toggle('space-pan-active', active);
+}
+
+function isEditableField(el) {
+  return !!(el && (el.closest?.('input, textarea, select, .cm-editor') || el.isContentEditable));
+}
+
 on(canvas, 'pointerdown', (e) => {
   if (e.button !== 0 && e.button !== 1) return;
-  if (e.target.closest('a')) return;
+  if (!isSpacePressed && e.target.closest('a')) return;
+  if (isSpacePressed) e.preventDefault();
+  if (document.activeElement && isEditableField(document.activeElement)) {
+    document.activeElement.blur();
+  }
   pan = { x: e.clientX - panX, y: e.clientY - panY, id: e.pointerId };
   try { canvas.setPointerCapture(e.pointerId); } catch (err) { }
   canvas.classList.add('panning');
+  document.body.classList.add('is-panning');
 });
 on(canvas, 'pointermove', (e) => {
   if (!pan || pan.id !== e.pointerId) return;
@@ -285,11 +303,29 @@ const endPan = (e) => {
   }
   pan = null;
   canvas.classList.remove('panning');
+  document.body.classList.remove('is-panning');
 };
 on(canvas, 'pointerup', endPan);
 on(canvas, 'pointercancel', endPan);
-on(canvas, 'pointercancel', endPan);
 on(canvas, 'dblclick', fitToView);
+
+on(window, 'keydown', (e) => {
+  if (e.code === 'Space' || e.key === ' ') {
+    if (!isEditableField(document.activeElement) && !isEditableField(e.target)) {
+      e.preventDefault();
+      if (!e.repeat) setSpacePan(true);
+    }
+  }
+});
+on(window, 'keyup', (e) => {
+  if (e.code === 'Space' || e.key === ' ') {
+    if (isSpacePressed) setSpacePan(false);
+  }
+});
+on(window, 'blur', () => {
+  if (isSpacePressed) setSpacePan(false);
+  endPan();
+});
 
 on($('#btn-zoom-in'), 'click', () => zoomAt(1.2));
 on($('#btn-zoom-out'), 'click', () => zoomAt(1 / 1.2));
@@ -912,6 +948,7 @@ const SHORTCUTS = [
   ]],
   ['sc_g_app', [
     ['sc_new', 'Alt+N'], ['sc_sidebar', 'Mod+B'], ['sc_render', 'Mod+Enter'],
+    ['sc_pan', 'Space+Drag'],
     ['sc_zoom', 'Mod+= / Mod+-'], ['sc_fit', 'Mod+0'], ['sc_export', 'Mod+Shift+E'],
     ['sc_help', '?'],
   ]],
@@ -1062,8 +1099,9 @@ applySplit();
 setCanvasBg(settings.canvasBg);
 setOrientation(settings.orientation);
 setLayout(settings.layoutMode);
-$('#sidebar').classList.toggle('collapsed', !settings.sidebarOpen);
-$('#btn-open-sidebar').classList.toggle('active', settings.sidebarOpen);
+const initialSidebarOpen = window.innerWidth <= 768 ? false : (settings.sidebarOpen ?? true);
+$('#sidebar').classList.toggle('collapsed', !initialSidebarOpen);
+$('#btn-open-sidebar').classList.toggle('active', initialSidebarOpen);
 $('#doc-title').value = store.active.name || '';
 document.title = `${store.active.name || 'Diagram'} - Karsa Studio`;
 

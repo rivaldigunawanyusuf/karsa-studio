@@ -20,6 +20,7 @@ const baseTheme = EditorView.theme({
   '.cm-scroller': {
     fontFamily: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
     lineHeight: '1.65',
+    overflow: 'auto',
   },
   '.cm-content': { caretColor: 'var(--accent)', padding: '12px 0' },
   '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--accent)', borderLeftWidth: '2px' },
